@@ -10,22 +10,21 @@ const AddProduct = () => {
     price: "",
     stock: "",
     category: "Clothing",
-    image: null,
+    images: [],
   });
 
   const token = localStorage.getItem("token");
 
   const previewUrl = useMemo(() => {
-    if (!formData.image) return "";
-    return URL.createObjectURL(formData.image);
-  }, [formData.image]);
+    return formData.images.map((image) => URL.createObjectURL(image));
+  }, [formData.images]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
     setFormData((current) => ({
       ...current,
-      [name]: name === "image" ? files[0] : value,
+      [name]: name === "images" ? Array.from(files || []) : value,
     }));
   };
 
@@ -41,8 +40,12 @@ const AddProduct = () => {
       formDataToSend.append("stock", formData.stock);
       formDataToSend.append("category", formData.category);
 
-      if (formData.image) {
-        formDataToSend.append("image", formData.image);
+      formData.images.forEach((image) => {
+        formDataToSend.append("images", image);
+      });
+
+      if (formData.images.length === 0) {
+        throw new Error("Please add at least one product image");
       }
 
       const res = await fetch(`${API_URL}/products`, {
@@ -67,7 +70,7 @@ const AddProduct = () => {
         price: "",
         stock: "",
         category: "Clothing",
-        image: null,
+        images: [],
       });
 
       e.target.reset();
@@ -87,7 +90,8 @@ const AddProduct = () => {
           Add Product
         </h1>
         <p className="mt-2 text-slate-600">
-          Create a polished product listing with clear details and stock.
+          Create a polished product listing with clear details, stock, and
+          product images customers can trust.
         </p>
       </div>
 
@@ -149,11 +153,21 @@ const AddProduct = () => {
 
           <input
             type="file"
-            name="image"
+            name="images"
             accept="image/*"
+            multiple
             onChange={handleChange}
             className="field"
+            required
           />
+
+          <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4">
+            <h3 className="font-bold text-slate-950">Product images</h3>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Upload clear photos from different angles. You can add up to 5
+              images, each under 5 MB.
+            </p>
+          </div>
 
           <button type="submit" className="btn-primary">
             Add Product
@@ -161,12 +175,26 @@ const AddProduct = () => {
         </form>
 
         <aside className="surface h-fit overflow-hidden rounded-xl">
-          {previewUrl ? (
-            <img
-              src={previewUrl}
-              alt="Product preview"
-              className="h-64 w-full object-cover"
-            />
+          {previewUrl.length > 0 ? (
+            <div className="grid gap-2 p-2">
+              <img
+                src={previewUrl[0]}
+                alt="Main product preview"
+                className="h-64 w-full rounded-lg object-cover"
+              />
+              {previewUrl.length > 1 && (
+                <div className="grid grid-cols-4 gap-2">
+                  {previewUrl.slice(1, 5).map((url, index) => (
+                    <img
+                      key={url}
+                      src={url}
+                      alt={`Product preview ${index + 2}`}
+                      className="h-20 rounded-lg object-cover"
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           ) : (
             <div className="grid h-64 place-items-center bg-slate-100 text-sm font-semibold text-slate-400">
               Image Preview

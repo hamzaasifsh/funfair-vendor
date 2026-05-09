@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { API_URL } from "../api/baseUrl";
+import { API_URL, imageUrl } from "../api/baseUrl";
 import useGsapReveal from "../hooks/useGsapReveal";
 
 const EditProduct = () => {
@@ -15,7 +15,8 @@ const EditProduct = () => {
     price: "",
     stock: "",
     category: "Clothing",
-    image: "",
+    existingImages: [],
+    images: [],
   });
 
   useEffect(() => {
@@ -39,7 +40,8 @@ const EditProduct = () => {
             price: product.price || "",
             stock: product.stock || "",
             category: product.category || "Clothing",
-            image: product.images?.[0] || "",
+            existingImages: product.images || [],
+            images: [],
           });
         }
       } catch (error) {
@@ -51,23 +53,39 @@ const EditProduct = () => {
   }, [id, token]);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value, files } = e.target;
+
+    setFormData((current) => ({
+      ...current,
+      [name]: name === "images" ? Array.from(files || []) : value,
+    }));
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
 
     try {
+      const formDataToSend = new FormData();
+
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("price", formData.price);
+      formDataToSend.append("stock", formData.stock);
+      formDataToSend.append("category", formData.category);
+      formDataToSend.append(
+        "existingImages",
+        JSON.stringify(formData.existingImages)
+      );
+      formData.images.forEach((image) => {
+        formDataToSend.append("images", image);
+      });
+
       const res = await fetch(`${API_URL}/products/${id}`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: formDataToSend,
       });
 
       const data = await res.json();
@@ -88,7 +106,7 @@ const EditProduct = () => {
           Edit Product
         </h1>
         <p className="mt-2 text-slate-600">
-          Update product details and keep the storefront accurate.
+          Update product details, stock, and product images.
         </p>
       </div>
 
@@ -110,14 +128,35 @@ const EditProduct = () => {
           className="field h-36 resize-none"
         />
 
+        {formData.existingImages.length > 0 && (
+          <div className="grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <h3 className="font-bold text-slate-950">Current images</h3>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {formData.existingImages.map((image) => (
+                <img
+                  key={image}
+                  src={imageUrl(image)}
+                  alt="Current product"
+                  className="h-24 rounded-lg object-cover"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
         <input
-          type="text"
-          name="image"
-          placeholder="Image URL"
-          value={formData.image}
+          type="file"
+          name="images"
+          accept="image/*"
+          multiple
           onChange={handleChange}
           className="field"
         />
+
+        <p className="text-sm leading-6 text-slate-500">
+          Add new images to replace or expand the product gallery. Use clear
+          photos under 5 MB each.
+        </p>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <input

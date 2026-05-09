@@ -1,5 +1,26 @@
 const Product = require("../models/Product");
 
+const getUploadedImages = (req) => {
+  const files = [
+    ...(req.files?.image || []),
+    ...(req.files?.images || []),
+  ];
+
+  return files.map((file) => `/uploads/${file.filename}`);
+};
+
+const parseExistingImages = (value) => {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+  } catch {
+    return [value].filter(Boolean);
+  }
+};
+
 exports.getProducts = async (req, res) => {
   try {
     const products = await Product.find();
@@ -13,7 +34,9 @@ exports.getProducts = async (req, res) => {
 exports.createProduct = async (req, res) => {
   try {
     const { name, description, price, stock, category, image } = req.body;
-    const uploadedImage = req.file ? `/uploads/${req.file.filename}` : image;
+    const uploadedImages = getUploadedImages(req);
+    const images =
+      uploadedImages.length > 0 ? uploadedImages : [image].filter(Boolean);
 
     const product = await Product.create({
       name,
@@ -22,7 +45,7 @@ exports.createProduct = async (req, res) => {
       stock,
       category,
       vendorId: req.vendor._id,
-      images: uploadedImage ? [uploadedImage] : [],
+      images,
     });
 
     res.status(201).json(product);
@@ -63,8 +86,9 @@ exports.deleteProduct = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   try {
-    const { name, description, price, stock, category, image } = req.body;
-    const uploadedImage = req.file ? `/uploads/${req.file.filename}` : image;
+    const { name, description, price, stock, category, image, existingImages } = req.body;
+    const uploadedImages = getUploadedImages(req);
+    const keptImages = parseExistingImages(existingImages || image);
 
     const product = await Product.findOne({
       _id: req.params.id,
@@ -80,7 +104,10 @@ exports.updateProduct = async (req, res) => {
     product.price = price;
     product.stock = stock;
     product.category = category;
-    product.images = uploadedImage ? [uploadedImage] : product.images;
+    product.images =
+      uploadedImages.length > 0 || keptImages.length > 0
+        ? [...keptImages, ...uploadedImages]
+        : product.images;
 
     const updatedProduct = await product.save();
 

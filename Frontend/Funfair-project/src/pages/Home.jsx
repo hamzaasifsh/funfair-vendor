@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import Foot from "../components/Foot";
 import Navbar from "../components/Navbar";
 import useGsapReveal from "../hooks/useGsapReveal";
 
@@ -54,49 +55,75 @@ const Home = () => {
       <Navbar />
 
       <section className="relative overflow-hidden border-b border-slate-200 bg-white">
-        <div className="ai-video-bg" aria-hidden="true">
-          <div className="ai-video-card left-[8%] top-[18%] hidden h-24 w-44 md:block" />
-          <div className="ai-video-card bottom-[12%] left-[30%] h-16 w-32 [animation-delay:800ms]" />
-          <div className="ai-video-card right-[12%] top-[22%] hidden h-20 w-36 [animation-delay:1400ms] lg:block" />
-          <div className="ai-video-card bottom-[18%] right-[24%] h-28 w-48 [animation-delay:500ms]" />
-        </div>
+        <div className="page-wrap relative py-8 md:py-10">
+          <div
+            data-gsap="fade-up"
+            className="relative min-h-[620px] overflow-hidden rounded-xl bg-slate-950 shadow-2xl md:min-h-[720px]"
+          >
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              src="/landing-products.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label="Luxury products floating in a cinematic ecommerce scene"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/56 to-slate-950/20" />
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/85 to-transparent" />
 
-        <div className="page-wrap relative grid min-h-[680px] gap-10 py-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-          <div data-gsap="fade-up" className="animate-fadeSlideLeft rounded-2xl bg-white/80 p-2 backdrop-blur-sm md:bg-transparent md:p-0 md:backdrop-blur-0">
-            <p className="eyebrow">Create an idea and sell online</p>
-            <h1 className="mt-4 max-w-3xl text-4xl font-extrabold leading-tight text-slate-950 md:text-6xl">
-              Take your stall idea from local counter to online business.
-            </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-              Dukan helps vendors present products beautifully, manage stock,
-              receive orders, and build a digital shop customers can visit from
-              anywhere.
-            </p>
+            <div className="relative z-10 flex min-h-[620px] items-end px-5 py-8 md:min-h-[720px] md:px-10 md:py-12 lg:px-14">
+              <div className="max-w-3xl">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-200">
+                  Create an idea and sell online
+                </p>
+                <h1 className="mt-4 text-4xl font-extrabold leading-tight text-white md:text-6xl">
+                  Take your stall idea from local counter to online business.
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-8 text-slate-200 md:text-lg">
+                  Dukan helps vendors present products beautifully, manage
+                  stock, receive orders, and build a digital shop customers can
+                  visit from anywhere.
+                </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <button onClick={() => navigate("/register")} className="btn-primary">
-                Start Your Online Store
-              </button>
-              <button
-                onClick={() => navigate("/shop")}
-                className="btn-secondary"
-              >
-                Explore Products
-              </button>
-            </div>
-
-            <div data-gsap-stagger className="mt-8 grid max-w-xl grid-cols-3 gap-3">
-              {landingStats.map(([value, label]) => (
-                <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-2xl font-extrabold text-slate-950">{value}</p>
-                  <p className="mt-1 text-xs font-semibold text-slate-500">{label}</p>
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <button
+                    onClick={() => navigate("/register")}
+                    className="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-950 shadow-sm hover:bg-slate-100 active:scale-[0.99]"
+                  >
+                    Start Your Online Store
+                  </button>
+                  <button
+                    onClick={() => navigate("/shop")}
+                    className="inline-flex items-center justify-center rounded-lg border border-white/30 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-sm backdrop-blur hover:bg-white/15 active:scale-[0.99]"
+                  >
+                    Explore Products
+                  </button>
                 </div>
-              ))}
+
+                <div
+                  data-gsap-stagger
+                  className="mt-8 grid max-w-xl grid-cols-3 gap-3"
+                >
+                  {landingStats.map(([value, label]) => (
+                    <div
+                      key={label}
+                      className="rounded-xl border border-white/15 bg-white/10 p-4 text-white backdrop-blur"
+                    >
+                      <p className="text-2xl font-extrabold">{value}</p>
+                      <p className="mt-1 text-xs font-semibold text-slate-300">
+                        {label}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
-          <div data-gsap="fade-up" className="animate-fadeSlideRight">
-            <div className="surface overflow-hidden rounded-xl bg-white/85 backdrop-blur">
+          <div data-gsap="fade-up" className="relative z-10 mx-auto -mt-12 max-w-5xl px-3 md:-mt-16">
+            <div className="surface overflow-hidden rounded-xl bg-white/95 shadow-2xl backdrop-blur">
               <div className="border-b border-slate-200 bg-slate-950 p-5 text-white">
                 <p className="text-sm font-semibold text-indigo-200">
                   Dukan Store Builder
@@ -250,34 +277,42 @@ const Home = () => {
           </div>
 
           <div data-gsap="fade-up" className="animate-softReveal [animation-delay:160ms]">
-            <div className="surface overflow-hidden rounded-xl bg-white">
-              <div className="min-h-[420px] bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_48%,#eef2ff_100%)] p-6">
-                <div className="mx-auto mt-4 max-w-sm rounded-[2rem] border border-white bg-white/80 p-5 shadow-2xl backdrop-blur">
-                  <div className="rounded-[1.5rem] bg-slate-950 p-4 text-white">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold uppercase tracking-[0.16em] text-indigo-200">
-                        Product shoot
-                      </span>
-                      <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
-                        Ready
-                      </span>
-                    </div>
-                    <div className="mt-8 grid h-56 place-items-center rounded-2xl bg-gradient-to-br from-rose-100 via-amber-100 to-white p-6">
-                      <div className="relative h-36 w-36 rounded-3xl bg-white shadow-xl">
-                        <div className="absolute -right-6 top-8 h-20 w-20 rounded-2xl bg-indigo-500 shadow-lg" />
-                        <div className="absolute -left-5 bottom-5 h-16 w-16 rounded-full bg-amber-400 shadow-lg" />
-                        <div className="absolute left-8 top-8 h-20 w-20 rounded-2xl bg-rose-500 shadow-lg" />
-                      </div>
-                    </div>
-                  </div>
+            <div className="surface overflow-hidden rounded-xl bg-slate-950 shadow-xl">
+              <div className="relative min-h-[460px] overflow-hidden">
+                <video
+                  className="absolute inset-0 h-full w-full object-cover"
+                  src="/product-photography.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  aria-label="Muted cinematic product photography preview"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent" />
+                <div className="absolute inset-x-0 top-0 flex items-center justify-between p-5">
+                  <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white backdrop-blur">
+                    Product shoot
+                  </span>
+                  <span className="rounded-full bg-emerald-400 px-4 py-2 text-xs font-extrabold text-emerald-950 shadow-lg">
+                    Muted
+                  </span>
+                </div>
 
+                <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
+                  <p className="max-w-sm text-2xl font-extrabold leading-tight text-white">
+                    Show texture, color, and quality before customers buy.
+                  </p>
                   <div className="mt-5 grid grid-cols-3 gap-3">
                     {["Light", "Angle", "Detail"].map((label) => (
-                      <div key={label} className="rounded-xl bg-slate-100 p-3 text-center">
-                        <p className="text-xs font-bold text-slate-500">{label}</p>
-                        <p className="mt-1 text-sm font-extrabold text-slate-950">
-                          Sharp
+                      <div
+                        key={label}
+                        className="rounded-xl border border-white/15 bg-white/10 p-3 text-center text-white backdrop-blur"
+                      >
+                        <p className="text-xs font-bold text-slate-300">
+                          {label}
                         </p>
+                        <p className="mt-1 text-sm font-extrabold">Sharp</p>
                       </div>
                     ))}
                   </div>
@@ -339,6 +374,65 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      <section className="page-wrap pb-16 pt-4">
+        <div
+          data-gsap="fade-up"
+          className="surface overflow-hidden rounded-xl bg-white shadow-xl"
+        >
+          <div className="grid lg:grid-cols-[0.82fr_1.18fr]">
+            <div className="bg-slate-950 p-8 text-white md:p-10">
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-indigo-300">
+                Quality promise
+              </p>
+              <h2 className="mt-4 text-3xl font-extrabold leading-tight md:text-5xl">
+                Always sell fresh, safe, and well-packed products.
+              </h2>
+              <p className="mt-5 leading-8 text-slate-300">
+                Dukan vendors should only list products that are fresh, clean,
+                and ready for customers. Damaged, expired, broken, or unsafe
+                products should never be sold.
+              </p>
+
+              <div data-gsap-stagger className="mt-7 grid gap-3">
+                {[
+                  ["Fresh products only", "Keep stock updated and remove anything old, expired, or unfit to sell."],
+                  ["No damaged items", "Do not sell broken, leaking, torn, used, or defective products."],
+                  ["Secure packaging", "Pack every order properly so it reaches the customer in good condition."],
+                  ["Customer trust", "Good quality and careful delivery make customers come back again."],
+                ].map(([title, desc]) => (
+                  <div
+                    key={title}
+                    className="rounded-xl border border-white/10 bg-white/10 p-4"
+                  >
+                    <h3 className="font-bold text-white">{title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-300">
+                      {desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative min-h-[420px] bg-slate-100">
+              <img
+                src="/quality-packaging.png"
+                alt="Premium packaging and quality checked products"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div className="absolute right-5 top-5 max-w-xs rounded-xl border border-white/60 bg-white/85 p-5 shadow-xl backdrop-blur">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-indigo-600">
+                  Vendor rule
+                </p>
+                <p className="mt-2 text-lg font-extrabold text-slate-950">
+                  No broken products. Only perfect quality.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <Foot />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import Foot from "../components/Foot";
 import Navbar from "../components/Navbar";
 import { API_URL, imageUrl } from "../api/baseUrl";
 import useGsapReveal from "../hooks/useGsapReveal";
@@ -58,34 +59,67 @@ const Shop = () => {
       <Navbar />
 
       <main ref={pageRef} className="page-wrap animate-pageEnter py-8">
-        <div data-gsap="fade-up" className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="eyebrow">Customer Storefront</p>
-            <h1 className="mt-2 text-4xl font-extrabold text-slate-950">
-              Shop products
-            </h1>
-            <p className="mt-2 max-w-2xl text-slate-600">
-              Browse fresh picks from Dukan vendors and add your favorites to
-              cart.
-            </p>
-          </div>
+        <section
+          data-gsap="fade-up"
+          className="relative mb-8 min-h-[520px] overflow-hidden rounded-xl bg-slate-950 shadow-2xl"
+        >
+          <video
+            className="absolute inset-0 h-full w-full object-contain"
+            src="/shop-hero.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-label="Muted premium shopping collection video"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/94 via-slate-950/48 to-slate-950/20" />
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/80 to-transparent" />
 
-          <div className="flex gap-2 overflow-x-auto rounded-xl bg-white p-1 shadow-sm scrollbar-hide">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`rounded-lg px-4 py-2 text-sm font-semibold whitespace-nowrap ${
-                  selectedCategory === category
-                    ? "bg-slate-950 text-white"
-                    : "text-slate-600 hover:bg-slate-100"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
+          <div className="relative z-10 flex min-h-[520px] flex-col justify-end gap-8 p-5 md:p-8 lg:flex-row lg:items-end lg:justify-between lg:p-10">
+            <div className="max-w-2xl">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-200">
+                Customer Storefront
+              </p>
+              <h1 className="mt-3 text-4xl font-extrabold leading-tight text-white md:text-6xl">
+                Shop products
+              </h1>
+              <p className="mt-4 max-w-xl text-base leading-8 text-slate-200 md:text-lg">
+                Browse fresh picks from Dukan vendors and add your favorites to
+                cart.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
+                  New arrivals
+                </span>
+                <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
+                  Vendor picks
+                </span>
+                <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
+                  Muted preview
+                </span>
+              </div>
+            </div>
+
+            <div className="max-w-full rounded-xl border border-white/15 bg-white/10 p-2 shadow-xl backdrop-blur-md lg:max-w-[520px]">
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold ${
+                      selectedCategory === category
+                        ? "bg-white text-slate-950"
+                        : "text-white hover:bg-white/15"
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
 
         {filteredProducts.length === 0 ? (
           <div data-gsap="fade-up" className="panel py-12 text-center">
@@ -151,6 +185,7 @@ const Shop = () => {
           </div>
         )}
       </main>
+      <Foot />
     </div>
   );
 };

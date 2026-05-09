@@ -1,6 +1,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Vendor = require("../models/vendor");
+const Vendor = require("../models/Vendor");
+const Product = require("../models/Product");
+const Order = require("../models/Order");
 
 const makeToken = (vendorId) => {
   return jwt.sign({ id: vendorId }, process.env.JWT_SECRET, { expiresIn: "7d" });
@@ -67,5 +69,30 @@ exports.loginVendor = async (req, res) => {
   } catch (error) {
     console.error("LOGIN ERROR:", error);
     return res.status(500).json({ message: error.message });
+  }
+};
+
+// GET /api/vendors/me
+exports.getAccount = async (req, res) => {
+  res.json({
+    _id: req.vendor._id,
+    name: req.vendor.name,
+    email: req.vendor.email,
+    stallName: req.vendor.stallName,
+    phone: req.vendor.phone,
+  });
+};
+
+// DELETE /api/vendors/me
+exports.deleteAccount = async (req, res) => {
+  try {
+    await Product.deleteMany({ vendorId: req.vendor._id });
+    await Order.deleteMany({ "items.vendorId": req.vendor._id });
+    await Vendor.findByIdAndDelete(req.vendor._id);
+
+    res.json({ message: "Account deleted successfully" });
+  } catch (error) {
+    console.error("DELETE ACCOUNT ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 };

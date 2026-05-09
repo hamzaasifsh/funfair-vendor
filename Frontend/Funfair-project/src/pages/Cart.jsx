@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import Foot from "../components/Foot";
 import Navbar from "../components/Navbar";
 import { API_URL, imageUrl } from "../api/baseUrl";
 import useGsapReveal from "../hooks/useGsapReveal";
@@ -9,6 +10,7 @@ const Cart = () => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     return storedCart;
   });
+  const [cartNotice, setCartNotice] = useState(null);
 
   const updateCart = (updatedItems) => {
     setCartItems(updatedItems);
@@ -45,6 +47,15 @@ const Cart = () => {
   useGsapReveal(pageRef, [cartItems.length]);
 
   const handleCheckout = async () => {
+    if (cartItems.length === 0) {
+      setCartNotice({
+        title: "Cart is not ready yet",
+        message: "Add a few products first, then your checkout will be ready.",
+        type: "empty",
+      });
+      return;
+    }
+
     try {
       const res = await fetch(`${API_URL}/orders`, {
         method: "POST",
@@ -64,7 +75,11 @@ const Cart = () => {
       });
 
       await res.json();
-      alert("Order placed successfully");
+      setCartNotice({
+        title: "Your cart is ready",
+        message: "Order placed successfully. Your selected products are on the way to the vendor.",
+        type: "success",
+      });
 
       localStorage.removeItem("cart");
       setCartItems([]);
@@ -78,24 +93,91 @@ const Cart = () => {
       <Navbar />
 
       <main ref={pageRef} className="page-wrap animate-pageEnter py-8">
-        <div data-gsap="fade-up" className="mb-8">
-          <p className="eyebrow">Checkout</p>
-          <h1 className="mt-2 text-4xl font-extrabold text-slate-950">
-            My Cart
-          </h1>
-          <p className="mt-2 text-slate-600">
-            Review quantities and place your order when everything looks right.
-          </p>
-        </div>
+        <section
+          data-gsap="fade-up"
+          className="relative mb-8 min-h-[420px] overflow-hidden rounded-xl bg-slate-950 shadow-2xl"
+        >
+          <img
+            src="/cart-luxe-preview.png"
+            alt="Luxury ecommerce cart preview"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/92 via-slate-950/52 to-slate-950/10" />
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/85 to-transparent" />
+
+          <div className="relative z-10 flex min-h-[420px] flex-col justify-end gap-8 p-5 md:p-8 lg:flex-row lg:items-end lg:justify-between lg:p-10">
+            <div className="max-w-2xl">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-200">
+                Checkout
+              </p>
+              <h1 className="mt-3 text-4xl font-extrabold leading-tight text-white md:text-6xl">
+                My Cart
+              </h1>
+              <p className="mt-4 max-w-xl text-base leading-8 text-slate-200 md:text-lg">
+                Review quantities and place your order when everything looks
+                right.
+              </p>
+            </div>
+
+            <div className="w-full max-w-sm rounded-xl border border-white/15 bg-white/10 p-5 text-white shadow-xl backdrop-blur-md">
+              <p className="text-sm font-semibold text-slate-300">
+                Cart status
+              </p>
+              <h2 className="mt-2 text-2xl font-extrabold">
+                {cartItems.length > 0 ? "Ready to checkout" : "Waiting for items"}
+              </h2>
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <div className="rounded-lg bg-white/10 p-3">
+                  <p className="text-xs font-semibold text-slate-300">Items</p>
+                  <p className="mt-1 text-2xl font-extrabold">
+                    {cartItems.length}
+                  </p>
+                </div>
+                <div className="rounded-lg bg-white/10 p-3">
+                  <p className="text-xs font-semibold text-slate-300">Total</p>
+                  <p className="mt-1 text-2xl font-extrabold">
+                    Rs {totalAmount}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {cartItems.length === 0 ? (
-          <div data-gsap="fade-up" className="panel py-12 text-center">
-            <h2 className="text-xl font-bold text-slate-950">
-              Your cart is empty
-            </h2>
-            <p className="mt-2 text-slate-600">
-              Add products from the shop to start an order.
-            </p>
+          <div data-gsap="fade-up" className="surface overflow-hidden rounded-xl">
+            <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
+              <div className="relative min-h-[280px] bg-slate-950">
+                <img
+                  src="/cart-luxe-preview.png"
+                  alt="Luxury shopping preview"
+                  className="absolute inset-0 h-full w-full object-cover opacity-80"
+                />
+                <div className="absolute inset-0 bg-slate-950/45" />
+              </div>
+              <div className="p-8 md:p-10">
+                <p className="eyebrow">Cart check</p>
+                <h2 className="mt-3 text-3xl font-extrabold text-slate-950">
+                  Your cart is empty
+                </h2>
+                <p className="mt-3 leading-7 text-slate-600">
+                  Add products from the shop to start an order. Once items are
+                  here, this page will show your total and checkout status.
+                </p>
+                <button
+                  onClick={() =>
+                    setCartNotice({
+                      title: "Cart is not ready yet",
+                      message: "Your cart needs at least one product before checkout.",
+                      type: "empty",
+                    })
+                  }
+                  className="btn-primary mt-6"
+                >
+                  Check Cart Status
+                </button>
+              </div>
+            </div>
           </div>
         ) : (
           <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
@@ -189,6 +271,51 @@ const Cart = () => {
           </div>
         )}
       </main>
+
+      {cartNotice && (
+        <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur-sm">
+          <div
+            data-gsap="fade-up"
+            className="surface max-w-md overflow-hidden rounded-xl text-center shadow-2xl"
+          >
+            <div className="relative h-44 bg-slate-950">
+              <img
+                src="/cart-luxe-preview.png"
+                alt="Cart status preview"
+                className="absolute inset-0 h-full w-full object-cover opacity-75"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-transparent" />
+              <div
+                className={`absolute bottom-5 left-1/2 grid h-16 w-16 -translate-x-1/2 place-items-center rounded-full text-2xl font-black shadow-xl ${
+                  cartNotice.type === "success"
+                    ? "bg-emerald-400 text-emerald-950"
+                    : "bg-amber-300 text-amber-950"
+                }`}
+              >
+                {cartNotice.type === "success" ? "✓" : "!"}
+              </div>
+            </div>
+            <div className="p-7">
+              <p className="eyebrow">
+                {cartNotice.type === "success" ? "Checkout" : "Cart status"}
+              </p>
+              <h2 className="mt-3 text-3xl font-extrabold text-slate-950">
+                {cartNotice.title}
+              </h2>
+              <p className="mt-3 leading-7 text-slate-600">
+                {cartNotice.message}
+              </p>
+              <button
+                onClick={() => setCartNotice(null)}
+                className="btn-primary mt-7 w-full"
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <Foot />
     </div>
   );
 };

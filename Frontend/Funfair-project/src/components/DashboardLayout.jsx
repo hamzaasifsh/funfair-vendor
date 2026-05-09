@@ -1,5 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import Foot from "./Foot";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
@@ -14,6 +15,7 @@ const DashboardLayout = () => {
           <Outlet />
         </main>
       </div>
+      <Foot />
     </div>
   );
 };

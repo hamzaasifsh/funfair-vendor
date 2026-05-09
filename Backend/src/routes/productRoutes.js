@@ -15,9 +15,14 @@ const upload = require("../utils/upload");
 router.get("/", getProducts);
 router.get("/my-products", authMiddleware, getMyProducts);
 
-router.post("/", authMiddleware, upload.single("image"), createProduct);
+const productImagesUpload = upload.fields([
+  { name: "image", maxCount: 1 },
+  { name: "images", maxCount: 5 },
+]);
 
-router.put("/:id", authMiddleware, upload.single("image"), updateProduct);
+router.post("/", authMiddleware, productImagesUpload, createProduct);
+
+router.put("/:id", authMiddleware, productImagesUpload, updateProduct);
 
 router.delete("/:id", authMiddleware, deleteProduct);
 
