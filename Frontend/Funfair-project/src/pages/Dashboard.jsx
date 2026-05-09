@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { API_URL } from "../api/baseUrl";
 import useGsapReveal from "../hooks/useGsapReveal";
 
 const Dashboard = () => {
@@ -15,7 +16,7 @@ const Dashboard = () => {
   useEffect(() => {
     const loadStats = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/products/my-products", {
+        const res = await fetch(`${API_URL}/products/my-products`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

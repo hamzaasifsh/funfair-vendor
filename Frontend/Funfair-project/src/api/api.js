@@ -1,7 +1,8 @@
 import axios from "axios";
+import { API_URL } from "./baseUrl";
 
 const api = axios.create({
-  baseURL: "/api", // this uses Vite proxy
+  baseURL: API_URL,
 });
 
 export default api;

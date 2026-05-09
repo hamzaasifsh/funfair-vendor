@@ -1,11 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Navbar from "../components/Navbar";
+import { API_URL, imageUrl } from "../api/baseUrl";
 import useGsapReveal from "../hooks/useGsapReveal";
-
-const imageUrl = (src) => {
-  if (!src) return "";
-  return src.startsWith("/uploads") ? `http://localhost:5000${src}` : src;
-};
 
 const Shop = () => {
   const pageRef = useRef(null);
@@ -15,7 +11,7 @@ const Shop = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/products");
+        const res = await fetch(`${API_URL}/products`);
         const data = await res.json();
         setProducts(Array.isArray(data) ? data : []);
       } catch (error) {

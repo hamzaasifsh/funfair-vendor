@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from "react";
+import { API_URL } from "../api/baseUrl";
 import useGsapReveal from "../hooks/useGsapReveal";
 
 const AddProduct = () => {
@@ -44,7 +45,7 @@ const AddProduct = () => {
         formDataToSend.append("image", formData.image);
       }
 
-      const res = await fetch("http://localhost:5000/api/products", {
+      const res = await fetch(`${API_URL}/products`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

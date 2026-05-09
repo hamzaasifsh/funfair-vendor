@@ -1,11 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL, imageUrl } from "../api/baseUrl";
 import useGsapReveal from "../hooks/useGsapReveal";
-
-const imageUrl = (src) => {
-  if (!src) return "";
-  return src.startsWith("/uploads") ? `http://localhost:5000${src}` : src;
-};
 
 const MyProducts = () => {
   const pageRef = useRef(null);
@@ -16,7 +12,7 @@ const MyProducts = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/products/my-products", {
+        const res = await fetch(`${API_URL}/products/my-products`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -34,7 +30,7 @@ const MyProducts = () => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+      const res = await fetch(`${API_URL}/products/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

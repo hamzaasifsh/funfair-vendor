@@ -1,11 +1,7 @@
 import { useRef, useState } from "react";
 import Navbar from "../components/Navbar";
+import { API_URL, imageUrl } from "../api/baseUrl";
 import useGsapReveal from "../hooks/useGsapReveal";
-
-const imageUrl = (src) => {
-  if (!src) return "";
-  return src.startsWith("/uploads") ? `http://localhost:5000${src}` : src;
-};
 
 const Cart = () => {
   const pageRef = useRef(null);
@@ -50,7 +46,7 @@ const Cart = () => {
 
   const handleCheckout = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/orders", {
+      const res = await fetch(`${API_URL}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

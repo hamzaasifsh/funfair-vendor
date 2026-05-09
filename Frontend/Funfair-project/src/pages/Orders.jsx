@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { API_URL } from "../api/baseUrl";
 import useGsapReveal from "../hooks/useGsapReveal";
 
 const statusStyles = {
@@ -16,7 +17,7 @@ const Orders = () => {
   useEffect(() => {
     const loadOrders = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/orders/vendor-orders", {
+        const res = await fetch(`${API_URL}/orders/vendor-orders`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -34,7 +35,7 @@ const Orders = () => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await fetch(`http://localhost:5000/api/orders/${orderId}`, {
+      await fetch(`${API_URL}/orders/${orderId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

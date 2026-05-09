@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { API_URL } from "../api/baseUrl";
 import useGsapReveal from "../hooks/useGsapReveal";
 
 const EditProduct = () => {
@@ -20,7 +21,7 @@ const EditProduct = () => {
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/products/my-products", {
+        const res = await fetch(`${API_URL}/products/my-products`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -60,7 +61,7 @@ const EditProduct = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+      const res = await fetch(`${API_URL}/products/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
