@@ -10,10 +10,24 @@ const Home = () => {
 
   useGsapReveal(pageRef, []);
 
+  const stepPreviewVideo = "/idea-step-preview.mp4";
+
   const ideaSteps = [
-    ["Create the idea", "Turn a product, stall concept, or homemade item into a real online listing."],
-    ["Build your catalog", "Add photos, prices, stock, and categories so customers understand what you sell."],
-    ["Sell online", "Share your store, take orders, and grow beyond only walk-in customers."],
+    {
+      title: "Create the idea",
+      desc: "Turn a product, stall concept, or homemade item into a real online listing.",
+      video: stepPreviewVideo,
+    },
+    {
+      title: "Build your catalog",
+      desc: "Add photos, prices, stock, and categories so customers understand what you sell.",
+      video: stepPreviewVideo,
+    },
+    {
+      title: "Sell online",
+      desc: "Share your store, take orders, and grow beyond only walk-in customers.",
+      video: stepPreviewVideo,
+    },
   ];
 
   const reasons = [
@@ -198,20 +212,35 @@ const Home = () => {
         </div>
 
         <div data-gsap-stagger className="mt-10 grid gap-5 md:grid-cols-3">
-          {ideaSteps.map(([title, desc], index) => (
+          {ideaSteps.map((step, index) => (
             <div
-              key={title}
-              className="metric-card opacity-0 animate-popFadeIn"
+              key={step.title}
+              className="metric-card overflow-hidden p-0 opacity-0 animate-popFadeIn"
               style={{
                 animationDelay: `${120 + index * 120}ms`,
                 animationFillMode: "forwards",
               }}
             >
-              <div className="grid h-12 w-12 place-items-center rounded-xl bg-slate-950 text-lg font-extrabold text-white">
-                {index + 1}
+              <div className="relative aspect-video overflow-hidden bg-slate-950">
+                <video
+                  className="h-full w-full object-cover"
+                  src={step.video}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  aria-label={`${step.title} preview`}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
+                <div className="absolute left-4 top-4 grid h-12 w-12 place-items-center rounded-xl bg-white text-lg font-extrabold text-slate-950 shadow-lg">
+                  {index + 1}
+                </div>
               </div>
-              <h3 className="mt-5 text-xl font-bold text-slate-950">{title}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">{desc}</p>
+              <div className="p-5">
+                <h3 className="text-xl font-bold text-slate-950">{step.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600">{step.desc}</p>
+              </div>
             </div>
           ))}
         </div>
