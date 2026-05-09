@@ -10,11 +10,15 @@ const {
 } = require("../controllers/productsController");
 
 const authMiddleware = require("../middlewares/authMiddleware");
+const upload = require("../utils/upload");
 
-router.get("/my-products", authMiddleware, getMyProducts);
 router.get("/", getProducts);
-router.post("/", authMiddleware, createProduct);
-router.put("/:id", authMiddleware, updateProduct);
+router.get("/my-products", authMiddleware, getMyProducts);
+
+router.post("/", authMiddleware, upload.single("image"), createProduct);
+
+router.put("/:id", authMiddleware, upload.single("image"), updateProduct);
+
 router.delete("/:id", authMiddleware, deleteProduct);
 
 module.exports = router;

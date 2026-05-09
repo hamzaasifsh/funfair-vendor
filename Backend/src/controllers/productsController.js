@@ -13,6 +13,7 @@ exports.getProducts = async (req, res) => {
 exports.createProduct = async (req, res) => {
   try {
     const { name, description, price, stock, category, image } = req.body;
+    const uploadedImage = req.file ? `/uploads/${req.file.filename}` : image;
 
     const product = await Product.create({
       name,
@@ -21,7 +22,7 @@ exports.createProduct = async (req, res) => {
       stock,
       category,
       vendorId: req.vendor._id,
-      images: image ? [image] : [],
+      images: uploadedImage ? [uploadedImage] : [],
     });
 
     res.status(201).json(product);
@@ -63,6 +64,7 @@ exports.deleteProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   try {
     const { name, description, price, stock, category, image } = req.body;
+    const uploadedImage = req.file ? `/uploads/${req.file.filename}` : image;
 
     const product = await Product.findOne({
       _id: req.params.id,
@@ -78,7 +80,7 @@ exports.updateProduct = async (req, res) => {
     product.price = price;
     product.stock = stock;
     product.category = category;
-    product.images = image ? [image] : [];
+    product.images = uploadedImage ? [uploadedImage] : product.images;
 
     const updatedProduct = await product.save();
 

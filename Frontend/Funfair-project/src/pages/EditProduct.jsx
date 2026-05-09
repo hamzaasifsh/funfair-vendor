@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import useGsapReveal from "../hooks/useGsapReveal";
 
 const EditProduct = () => {
+  const pageRef = useRef(null);
   const { id } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -75,27 +77,36 @@ const EditProduct = () => {
     }
   };
 
-  return (
-    <div className="bg-white rounded-2xl shadow p-6 max-w-3xl">
-      <h1 className="text-3xl font-bold mb-2">Edit Product</h1>
-      <p className="text-gray-500 mb-6">Update your product details.</p>
+  useGsapReveal(pageRef, []);
 
-      <form onSubmit={handleUpdate} className="space-y-4">
+  return (
+    <div ref={pageRef} className="animate-pageEnter">
+      <div data-gsap="fade-up" className="mb-6">
+        <p className="eyebrow">Catalog</p>
+        <h1 className="mt-2 text-3xl font-extrabold text-slate-950">
+          Edit Product
+        </h1>
+        <p className="mt-2 text-slate-600">
+          Update product details and keep the storefront accurate.
+        </p>
+      </div>
+
+      <form onSubmit={handleUpdate} data-gsap="fade-up" className="panel max-w-3xl space-y-4">
         <input
           type="text"
           name="name"
-          placeholder="Product Name"
+          placeholder="Product name"
           value={formData.name}
           onChange={handleChange}
-          className="w-full border rounded-lg px-4 py-3"
+          className="field"
         />
 
         <textarea
           name="description"
-          placeholder="Product Description"
+          placeholder="Product description"
           value={formData.description}
           onChange={handleChange}
-          className="w-full border rounded-lg px-4 py-3 h-32"
+          className="field h-36 resize-none"
         />
 
         <input
@@ -104,17 +115,17 @@ const EditProduct = () => {
           placeholder="Image URL"
           value={formData.image}
           onChange={handleChange}
-          className="w-full border rounded-lg px-4 py-3"
+          className="field"
         />
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-4 sm:grid-cols-2">
           <input
             type="number"
             name="price"
             placeholder="Price"
             value={formData.price}
             onChange={handleChange}
-            className="w-full border rounded-lg px-4 py-3"
+            className="field"
           />
 
           <input
@@ -123,7 +134,7 @@ const EditProduct = () => {
             placeholder="Stock"
             value={formData.stock}
             onChange={handleChange}
-            className="w-full border rounded-lg px-4 py-3"
+            className="field"
           />
         </div>
 
@@ -131,7 +142,7 @@ const EditProduct = () => {
           name="category"
           value={formData.category}
           onChange={handleChange}
-          className="w-full border rounded-lg px-4 py-3"
+          className="field"
         >
           <option value="Clothing">Clothing</option>
           <option value="Beauty">Beauty</option>
@@ -140,12 +151,18 @@ const EditProduct = () => {
           <option value="Other">Other</option>
         </select>
 
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg"
-        >
-          Update Product
-        </button>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <button type="submit" className="btn-primary">
+            Update Product
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/my-products")}
+            className="btn-secondary"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -1,91 +1,79 @@
-import { useNavigate, useLocation } from "react-router-dom";
-import { useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("token");
-  const scrollRef = useRef(null);
 
   const logout = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
 
-  const scrollLeft = () => {
-    scrollRef.current.scrollBy({ left: -150, behavior: "smooth" });
-  };
-
-  const scrollRight = () => {
-    scrollRef.current.scrollBy({ left: 150, behavior: "smooth" });
-  };
+  const links = [
+    { label: "Home", path: "/" },
+    { label: "Shop", path: "/shop" },
+    { label: "Cart", path: "/cart" },
+    { label: "Dashboard", path: "/dashboard" },
+  ];
 
   const navBtn = (path) =>
-    `px-4 py-2 rounded-lg font-medium transition whitespace-nowrap ${
+    `shrink-0 rounded-lg px-3 py-2 text-sm font-semibold whitespace-nowrap ${
       location.pathname === path
-        ? "bg-white text-blue-700 shadow"
-        : "text-white hover:bg-white/15"
+        ? "bg-slate-950 text-white shadow-sm"
+        : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
     }`;
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-blue-600 text-white shadow-md">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 grid md:grid-cols-3 items-center gap-4">
-
-        {/* Left Search */}
-        <div className="flex justify-center md:justify-start">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
+      <div className="page-wrap grid min-h-[72px] gap-3 py-3 md:grid-cols-[1fr_auto_1fr] md:items-center">
+        <div className="relative w-full md:w-80">
           <input
             type="text"
-            placeholder="Search products..."
-            className="w-full md:w-72 px-4 py-2 rounded-xl text-black outline-none"
+            aria-label="Search products"
+            className="field h-11"
+            placeholder="Search products, stalls, categories"
           />
         </div>
 
-        {/* Middle Logo */}
-        <div className="flex justify-center">
-          <h1
-            onClick={() => navigate("/")}
-            className="text-2xl font-extrabold cursor-pointer"
-          >
-            Dukan
-          </h1>
-        </div>
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center justify-center gap-3 text-left"
+          aria-label="Go to home"
+        >
+          <span className="grid h-11 w-11 place-items-center rounded-xl bg-slate-950 text-lg font-black text-white">
+            D
+          </span>
+          <span>
+            <span className="block text-xl font-extrabold text-slate-950">
+              Dukan
+            </span>
+            <span className="block text-xs font-medium text-slate-500">
+              Vendor marketplace
+            </span>
+          </span>
+        </button>
 
-        {/* Right Navigation with arrows */}
-        <div className="flex items-center gap-2">
+        <div className="flex justify-start md:justify-end">
+          <nav className="flex max-w-full gap-1 overflow-x-auto rounded-xl bg-slate-50 p-1 scrollbar-hide">
+            {links.map((link) => (
+              <button
+                key={link.path}
+                onClick={() => navigate(link.path)}
+                className={navBtn(link.path)}
+              >
+                {link.label}
+              </button>
+            ))}
 
-          {/* Left Arrow */}
-          <button
-            onClick={scrollLeft}
-            className="bg-white/20 px-2 py-1 rounded hover:bg-white/30"
-          >
-            ◀
-          </button>
-
-          {/* Scrollable Nav */}
-          <div
-            ref={scrollRef}
-            className="flex gap-2 overflow-x-hidden scroll-smooth"
-          >
-            <button onClick={() => navigate("/")} className={navBtn("/")}>
-              Home
-            </button>
-
-            <button
-              onClick={() => navigate("/dashboard")}
-              className={navBtn("/dashboard")}
-            >
-              My Account
-            </button>
-
-            {!token && (
+            {!token ? (
               <>
                 <button
                   onClick={() => navigate("/register")}
                   className={navBtn("/register")}
                 >
-                  Create Account
+                  Register
                 </button>
-
                 <button
                   onClick={() => navigate("/login")}
                   className={navBtn("/login")}
@@ -93,26 +81,15 @@ export default function Navbar() {
                   Login
                 </button>
               </>
-            )}
-
-            {token && (
+            ) : (
               <button
                 onClick={logout}
-                className="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold"
+                className="rounded-lg px-3 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-50"
               >
                 Logout
               </button>
             )}
-          </div>
-
-          {/* Right Arrow */}
-          <button
-            onClick={scrollRight}
-            className="bg-white/20 px-2 py-1 rounded hover:bg-white/30"
-          >
-            ▶
-          </button>
-
+          </nav>
         </div>
       </div>
     </header>

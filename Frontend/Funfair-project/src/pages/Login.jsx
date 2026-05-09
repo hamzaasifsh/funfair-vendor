@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api/api";
+import useGsapReveal from "../hooks/useGsapReveal";
 
 export default function Login() {
   const navigate = useNavigate();
+  const pageRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
   const [email, setEmail] = useState("test@gmail.com");
@@ -15,7 +17,7 @@ export default function Login() {
     try {
       const res = await api.post("/vendors/login", { email, password });
       localStorage.setItem("token", res.data.token);
-      alert("Login Success ✅");
+      alert("Login Success");
       navigate("/dashboard");
     } catch (err) {
       alert(err.response?.data?.message || err.message || "Login Failed");
@@ -24,67 +26,99 @@ export default function Login() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
-      <div className="w-full max-w-5xl grid md:grid-cols-2 gap-8 items-center">
-        {/* Left section */}
-        <div className="hidden md:block">
-          <h1 className="text-4xl font-extrabold text-slate-900 leading-tight">
-            Welcome back to <span className="text-blue-600">Funfair</span>
-          </h1>
-          <p className="mt-3 text-slate-600">
-            Login to manage products, prices, stock & orders.
-          </p>
+  useGsapReveal(pageRef, []);
 
-          <div className="mt-6 rounded-2xl bg-blue-600 text-white p-6 shadow-lg">
-            <div className="text-lg font-bold">Seller Tip ✅</div>
-            <div className="mt-2 text-white/90 text-sm">
-              Keep products updated with correct stock to avoid order issues.
+  return (
+    <div ref={pageRef} className="grid min-h-screen bg-slate-950 lg:grid-cols-[0.95fr_1.05fr]">
+      <section data-gsap="fade-up" className="hidden p-8 lg:flex lg:flex-col lg:justify-between">
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-3 text-left"
+        >
+          <span className="grid h-11 w-11 place-items-center rounded-xl bg-white text-lg font-black text-slate-950">
+            D
+          </span>
+          <span className="text-xl font-extrabold text-white">Dukan</span>
+        </button>
+
+        <div className="max-w-xl">
+          <p className="eyebrow text-indigo-300">Vendor Access</p>
+          <h1 className="mt-4 text-5xl font-extrabold leading-tight text-white">
+            Welcome back to your selling workspace.
+          </h1>
+          <p className="mt-5 text-lg leading-8 text-slate-300">
+            Manage products, stock, orders, and customer activity from one clean
+            dashboard.
+          </p>
+        </div>
+
+        <div data-gsap-stagger className="grid grid-cols-3 gap-3 text-white">
+          {["Products", "Orders", "Stock"].map((item) => (
+            <div key={item} className="rounded-xl bg-white/10 p-4">
+              <p className="text-sm font-semibold text-slate-300">{item}</p>
+              <p className="mt-2 text-2xl font-extrabold">Live</p>
             </div>
+          ))}
+        </div>
+      </section>
+
+      <section data-gsap="fade-up" className="flex animate-pageEnter items-center justify-center bg-[#f7f8fb] px-4 py-10">
+        <div className="w-full max-w-md">
+          <div className="mb-8 lg:hidden">
+            <button
+              onClick={() => navigate("/")}
+              className="flex items-center gap-3 text-left"
+            >
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-slate-950 text-lg font-black text-white">
+                D
+              </span>
+              <span className="text-xl font-extrabold text-slate-950">
+                Dukan
+              </span>
+            </button>
+          </div>
+
+          <div className="surface rounded-xl p-6 md:p-8">
+            <p className="eyebrow">Sign In</p>
+            <h2 className="mt-2 text-3xl font-extrabold text-slate-950">
+              Vendor Login
+            </h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Enter your email and password to continue.
+            </p>
+
+            <form onSubmit={handleLogin} className="mt-6 space-y-4">
+              <input
+                className="field"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+
+              <input
+                className="field"
+                placeholder="Password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+
+              <button disabled={loading} className="btn-primary w-full">
+                {loading ? "Logging in..." : "Login"}
+              </button>
+            </form>
+
+            <p className="mt-5 text-sm text-slate-600">
+              New vendor?{" "}
+              <Link to="/register" className="font-semibold text-indigo-700">
+                Create account
+              </Link>
+            </p>
           </div>
         </div>
-
-        {/* Card */}
-        <div className="bg-white rounded-2xl shadow-lg border p-6 md:p-8">
-          <h2 className="text-2xl font-bold text-slate-900">Vendor Login</h2>
-          <p className="text-slate-500 text-sm mt-1">
-            Enter your email & password
-          </p>
-
-          <form onSubmit={handleLogin} className="mt-6 space-y-4">
-            <input
-              className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-
-            <input
-              className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-
-            <button
-              disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition disabled:opacity-60"
-            >
-              {loading ? "Logging in..." : "Login"}
-            </button>
-          </form>
-
-          <p className="text-sm text-slate-600 mt-4">
-            New Vendor?{" "}
-            <Link to="/register" className="text-blue-600 font-semibold">
-              Create account
-            </Link>
-          </p>
-        </div>
-      </div>
+      </section>
     </div>
   );
 }

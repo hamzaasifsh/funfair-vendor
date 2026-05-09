@@ -1,48 +1,49 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const items = [
+    { label: "Dashboard", path: "/dashboard" },
+    { label: "My Products", path: "/my-products" },
+    { label: "Add Product", path: "/add-product" },
+    { label: "Orders", path: "/orders" },
+  ];
 
   return (
-    <div className="w-72 bg-white rounded-2xl shadow-md border p-5 h-fit">
-      <h2 className="text-lg font-bold text-slate-900 mb-4">Navigation</h2>
-
-      <div className="space-y-2">
-        <button
-          onClick={() => navigate("/dashboard")}
-          className="w-full text-left px-4 py-2 rounded-lg bg-blue-50 text-blue-600 font-semibold border"
-        >
-          Dashboard
-        </button>
-
-        <button
-          onClick={() => navigate("/my-products")}
-          className="w-full text-left px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition"
-        >
-          My Products
-        </button>
-
-        <button
-          onClick={() => navigate("/add-product")}
-          className="w-full text-left px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition"
-        >
-          Add Product
-        </button>
-
-        <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">
-          Orders
-        </button>
-
-        <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition">
-          Settings
-        </button>
+    <aside className="surface w-full rounded-xl p-3 md:sticky md:top-24 md:w-64 md:self-start">
+      <div className="px-3 py-3">
+        <p className="eyebrow">Vendor Panel</p>
+        <h2 className="mt-1 text-lg font-bold text-slate-950">Workspace</h2>
       </div>
 
-      <div className="mt-6 p-4 bg-slate-50 rounded-xl border">
-        <p className="text-sm text-slate-600">
-          Tip: Keep stock updated so customers always see correct availability.
+      <nav className="grid gap-1">
+        {items.map((item) => {
+          const active = location.pathname === item.path;
+
+          return (
+            <button
+              key={item.path}
+              onClick={() => navigate(item.path)}
+              className={`rounded-lg px-4 py-3 text-left text-sm font-semibold ${
+                active
+                  ? "bg-slate-950 text-white shadow-sm"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
+              }`}
+            >
+              {item.label}
+            </button>
+          );
+        })}
+      </nav>
+
+      <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
+        <p className="text-sm font-semibold text-amber-950">Stock health</p>
+        <p className="mt-1 text-sm text-amber-800">
+          Keep quantities current so customers only order what you can deliver.
         </p>
       </div>
-    </div>
+    </aside>
   );
 }
