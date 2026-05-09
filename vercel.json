@@ -1,0 +1,11 @@
+{
+  "installCommand": "cd Frontend/Funfair-project && npm install",
+  "buildCommand": "cd Frontend/Funfair-project && npm run build",
+  "outputDirectory": "Frontend/Funfair-project/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
