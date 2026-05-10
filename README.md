@@ -87,6 +87,39 @@ This project helped me improve my skills in:
 
 ---
 
+## Admin Access
+
+The app includes an admin panel at `/admin`.
+
+To create an admin account:
+
+1. Set `ADMIN_EMAIL` in `Backend/.env`.
+2. Register a vendor account using that same email.
+3. Log in with that account and open `/admin`.
+
+Admin users can view platform stats, manage vendors, manage products, and update order statuses.
+
+---
+
+## Stripe Checkout
+
+The cart checkout uses Stripe Checkout in test mode.
+
+To enable payments:
+
+1. Create a Stripe account.
+2. Copy your Stripe test secret key.
+3. Add it to `Backend/.env`:
+
+```env
+STRIPE_SECRET_KEY=sk_test_your_key_here
+CLIENT_URL=http://localhost:5173
+```
+
+Customers pay from the cart page. After payment, Stripe redirects to `/checkout-success`, where the app confirms the session and marks the order as paid.
+
+---
+
 ## 📁 Project Structure
 
 ```bash

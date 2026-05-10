@@ -7,6 +7,11 @@ const vendorSchema = new mongoose.Schema(
     password: { type: String, required: true, minlength: 6 },
     stallName: { type: String, default: "" },
     phone: { type: String, default: "" },
+    role: {
+      type: String,
+      enum: ["vendor", "admin"],
+      default: "vendor",
+    },
   },
   { timestamps: true }
 );

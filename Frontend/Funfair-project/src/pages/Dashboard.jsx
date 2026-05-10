@@ -60,7 +60,7 @@ const Dashboard = () => {
 
   return (
     <div ref={pageRef} className="animate-pageEnter">
-      <div data-gsap="fade-up" className="mb-6">
+      <div data-gsap="slide-left" className="mb-6">
         <p className="eyebrow">Overview</p>
         <h1 className="mt-2 text-3xl font-extrabold text-slate-950">
           Vendor Dashboard
@@ -72,7 +72,7 @@ const Dashboard = () => {
 
       <div data-gsap-stagger className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {metrics.map(([label, value, helper]) => (
-          <div key={label} className="metric-card">
+          <div key={label} data-gsap-hover="lift" className="metric-card">
             <p className="text-sm font-semibold text-slate-500">{label}</p>
             <p className="mt-3 text-3xl font-extrabold text-slate-950">
               {value}
@@ -83,12 +83,12 @@ const Dashboard = () => {
       </div>
 
       <div data-gsap-stagger className="mt-6 grid gap-6 lg:grid-cols-[1fr_340px]">
-        <section className="panel">
+        <section data-gsap="slide-left" className="panel">
           <h2 className="text-xl font-bold text-slate-950">
             Store Performance
           </h2>
           <div className="mt-5 h-56 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5">
-            <div className="flex h-full items-end gap-3">
+            <div data-gsap-bars className="flex h-full items-end gap-3">
               {[42, 64, 38, 78, 56, 88, 70].map((height, index) => (
                 <div
                   key={index}
@@ -100,7 +100,7 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <section className="panel">
+        <section data-gsap="slide-right" className="panel">
           <h2 className="text-xl font-bold text-slate-950">Next Actions</h2>
           <div className="mt-4 space-y-3">
             {[
@@ -110,6 +110,7 @@ const Dashboard = () => {
             ].map((item) => (
               <div
                 key={item}
+                data-gsap-hover="lift"
                 className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm font-medium text-slate-700"
               >
                 {item}

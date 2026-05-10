@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Foot from "../components/Foot";
 import Navbar from "../components/Navbar";
@@ -7,26 +7,31 @@ import useGsapReveal from "../hooks/useGsapReveal";
 const Home = () => {
   const navigate = useNavigate();
   const pageRef = useRef(null);
+  const [activeIdeaStep, setActiveIdeaStep] = useState(0);
 
   useGsapReveal(pageRef, []);
-
-  const stepPreviewVideo = "/idea-step-preview.mp4";
 
   const ideaSteps = [
     {
       title: "Create the idea",
       desc: "Turn a product, stall concept, or homemade item into a real online listing.",
-      video: stepPreviewVideo,
+      media: "/step-create-idea.mp4",
+      mediaType: "video",
+      label: "Plan",
     },
     {
       title: "Build your catalog",
       desc: "Add photos, prices, stock, and categories so customers understand what you sell.",
-      video: stepPreviewVideo,
+      media: "/step-build-catalog-card.png",
+      mediaType: "image",
+      label: "Organize",
     },
     {
       title: "Sell online",
       desc: "Share your store, take orders, and grow beyond only walk-in customers.",
-      video: stepPreviewVideo,
+      media: "/step-build-catalog.mp4",
+      mediaType: "video",
+      label: "Launch",
     },
   ];
 
@@ -64,15 +69,27 @@ const Home = () => {
     "Groceries",
   ];
 
+  const showPreviousStep = () => {
+    setActiveIdeaStep((current) =>
+      current === 0 ? ideaSteps.length - 1 : current - 1
+    );
+  };
+
+  const showNextStep = () => {
+    setActiveIdeaStep((current) =>
+      current === ideaSteps.length - 1 ? 0 : current + 1
+    );
+  };
+
   return (
     <div ref={pageRef} className="app-page overflow-x-hidden">
       <Navbar />
 
       <section className="relative overflow-hidden border-b border-slate-200 bg-white">
-        <div className="page-wrap relative py-8 md:py-10">
+        <div className="relative">
           <div
-            data-gsap="fade-up"
-            className="relative min-h-[620px] overflow-hidden rounded-xl bg-slate-950 shadow-2xl md:min-h-[720px]"
+            data-gsap="hero-pop"
+            className="relative min-h-[560px] overflow-hidden bg-slate-950 shadow-2xl md:min-h-[720px]"
           >
             <video
               className="absolute inset-0 h-full w-full object-cover"
@@ -87,21 +104,21 @@ const Home = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/56 to-slate-950/20" />
             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/85 to-transparent" />
 
-            <div className="relative z-10 flex min-h-[620px] items-end px-5 py-8 md:min-h-[720px] md:px-10 md:py-12 lg:px-14">
+            <div className="page-wrap relative z-10 flex min-h-[560px] items-end py-8 md:min-h-[720px] md:py-12">
               <div className="max-w-3xl">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-200">
+                <p data-gsap-hero-child className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-200">
                   Create an idea and sell online
                 </p>
-                <h1 className="mt-4 text-4xl font-extrabold leading-tight text-white md:text-6xl">
+                <h1 data-gsap-hero-child className="mt-4 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-6xl">
                   Take your stall idea from local counter to online business.
                 </h1>
-                <p className="mt-5 max-w-2xl text-base leading-8 text-slate-200 md:text-lg">
+                <p data-gsap-hero-child className="mt-5 max-w-2xl text-sm leading-7 text-slate-200 sm:text-base md:text-lg md:leading-8">
                   Dukan helps vendors present products beautifully, manage
                   stock, receive orders, and build a digital shop customers can
                   visit from anywhere.
                 </p>
 
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <div data-gsap-hero-child className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <button
                     onClick={() => navigate("/register")}
                     className="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-950 shadow-sm hover:bg-slate-100 active:scale-[0.99]"
@@ -117,8 +134,9 @@ const Home = () => {
                 </div>
 
                 <div
+                  data-gsap-hero-child
                   data-gsap-stagger
-                  className="mt-8 grid max-w-xl grid-cols-3 gap-3"
+                  className="mt-8 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3"
                 >
                   {landingStats.map(([value, label]) => (
                     <div
@@ -136,7 +154,8 @@ const Home = () => {
             </div>
           </div>
 
-          <div data-gsap="fade-up" className="relative z-10 mx-auto -mt-12 max-w-5xl px-3 md:-mt-16">
+          <div data-gsap="fade-up" className="page-wrap relative z-10 py-10">
+            <div className="mx-auto max-w-5xl">
             <div className="surface overflow-hidden rounded-xl bg-white/95 shadow-2xl backdrop-blur">
               <div className="border-b border-slate-200 bg-slate-950 p-5 text-white">
                 <p className="text-sm font-semibold text-indigo-200">
@@ -195,54 +214,111 @@ const Home = () => {
                 </div>
               </div>
             </div>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="page-wrap py-14">
-        <div data-gsap="fade-up" className="mx-auto max-w-3xl text-center">
-          <p className="eyebrow">From idea to income</p>
-          <h2 className="mt-3 text-3xl font-extrabold text-slate-950 md:text-5xl">
-            Build a business path customers can actually follow.
-          </h2>
-          <p className="mt-4 text-lg leading-8 text-slate-600">
-            A good online presence does more than show products. It explains
-            what you sell, builds confidence, and makes the next step simple.
-          </p>
+        <div data-gsap="fade-up" className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-3xl">
+            <p className="eyebrow">From idea to income</p>
+            <h2 className="mt-3 text-3xl font-extrabold leading-tight text-slate-950 md:text-5xl">
+              Build a business path customers can actually follow.
+            </h2>
+            <p className="mt-4 text-lg leading-8 text-slate-600">
+              A good online presence does more than show products. It explains
+              what you sell, builds confidence, and makes the next step simple.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={showPreviousStep}
+              className="grid h-12 w-12 place-items-center rounded-lg border border-slate-200 bg-white text-xl font-extrabold text-slate-950 shadow-sm hover:bg-slate-50 active:scale-[0.98]"
+              aria-label="Show previous business step"
+            >
+              {"<"}
+            </button>
+            <button
+              type="button"
+              onClick={showNextStep}
+              className="grid h-12 w-12 place-items-center rounded-lg bg-slate-950 text-xl font-extrabold text-white shadow-sm hover:bg-slate-800 active:scale-[0.98]"
+              aria-label="Show next business step"
+            >
+              {">"}
+            </button>
+          </div>
         </div>
 
-        <div data-gsap-stagger className="mt-10 grid gap-5 md:grid-cols-3">
-          {ideaSteps.map((step, index) => (
-            <div
-              key={step.title}
-              className="metric-card overflow-hidden p-0 opacity-0 animate-popFadeIn"
-              style={{
-                animationDelay: `${120 + index * 120}ms`,
-                animationFillMode: "forwards",
-              }}
-            >
-              <div className="relative aspect-video overflow-hidden bg-slate-950">
-                <video
-                  className="h-full w-full object-cover"
-                  src={step.video}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  aria-label={`${step.title} preview`}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                <div className="absolute left-4 top-4 grid h-12 w-12 place-items-center rounded-xl bg-white text-lg font-extrabold text-slate-950 shadow-lg">
-                  {index + 1}
+        <div data-gsap="pop" className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl shadow-slate-200/80">
+          <div
+            className="flex transition-transform duration-700 ease-out"
+            style={{ transform: `translateX(-${activeIdeaStep * 100}%)` }}
+          >
+            {ideaSteps.map((step, index) => (
+              <div
+                key={step.title}
+                className="min-w-full"
+              >
+                <div className="grid min-h-[520px] lg:grid-cols-[1.15fr_0.85fr]">
+                  <div className="relative min-h-[360px] overflow-hidden bg-slate-950 lg:min-h-[520px]">
+                    {step.mediaType === "video" ? (
+                      <video
+                        className="absolute inset-0 h-full w-full object-cover"
+                        src={step.media}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        aria-label={`${step.title} video preview`}
+                      />
+                    ) : (
+                      <img
+                        className="absolute inset-0 h-full w-full object-cover"
+                        src={step.media}
+                        alt={`${step.title} preview`}
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent" />
+                    <div className="absolute left-5 top-5 rounded-lg border border-white/20 bg-white/15 px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white backdrop-blur">
+                      Step 0{index + 1}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col justify-center p-6 md:p-10 lg:p-12">
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-indigo-600">
+                      {step.label}
+                    </p>
+                    <h3 className="mt-4 text-3xl font-extrabold leading-tight text-slate-950 md:text-5xl">
+                      {step.title}
+                    </h3>
+                    <p className="mt-5 text-base leading-8 text-slate-600 md:text-lg">
+                      {step.desc}
+                    </p>
+                    <div className="mt-7 h-1.5 w-20 rounded-full bg-slate-950" />
+                    <div className="mt-8 flex gap-2">
+                      {ideaSteps.map((dotStep, dotIndex) => (
+                        <button
+                          key={dotStep.title}
+                          type="button"
+                          onClick={() => setActiveIdeaStep(dotIndex)}
+                          className={`h-2.5 rounded-full transition-all ${
+                            activeIdeaStep === dotIndex
+                              ? "w-9 bg-slate-950"
+                              : "w-2.5 bg-slate-300 hover:bg-slate-400"
+                          }`}
+                          aria-label={`Show ${dotStep.title}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="p-5">
-                <h3 className="text-xl font-bold text-slate-950">{step.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{step.desc}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 

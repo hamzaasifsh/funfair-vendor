@@ -35,6 +35,7 @@ app.use(express.json());
 const productRoutes = require("./src/routes/productRoutes");
 const orderRoutes = require("./src/routes/orderRoutes");
 const vendorRoutes = require("./src/routes/vendorRoutes");
+const adminRoutes = require("./src/routes/adminRoutes");
 
 const path = require("path");
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -42,6 +43,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/vendors", vendorRoutes);
+app.use("/api/admin", adminRoutes);
 
 // ✅ test route
 app.get("/", (req, res) => {

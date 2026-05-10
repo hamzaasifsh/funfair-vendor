@@ -57,7 +57,7 @@ const Orders = () => {
 
   return (
     <div ref={pageRef} className="animate-pageEnter">
-      <div data-gsap="fade-up" className="mb-6">
+      <div data-gsap="slide-left" className="mb-6">
         <p className="eyebrow">Fulfillment</p>
         <h1 className="mt-2 text-3xl font-extrabold text-slate-950">
           Orders
@@ -77,7 +77,11 @@ const Orders = () => {
       ) : (
         <div data-gsap-stagger className="space-y-4">
           {orders.map((order) => (
-            <article key={order._id} className="surface rounded-xl p-5">
+            <article
+              key={order._id}
+              data-gsap-hover="lift"
+              className="surface rounded-xl p-5"
+            >
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div>
                   <p className="text-sm font-semibold text-slate-500">
@@ -92,6 +96,15 @@ const Orders = () => {
                 </div>
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <span
+                    className={`status-pill ${
+                      order.paymentStatus === "paid"
+                        ? "bg-emerald-100 text-emerald-800"
+                        : "bg-amber-100 text-amber-800"
+                    }`}
+                  >
+                    {order.paymentStatus || "pending"}
+                  </span>
                   <span
                     className={`status-pill ${
                       statusStyles[order.status] || statusStyles.Pending

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import gsap from "gsap";
 import api from "../api/api";
 
 export default function Navbar() {
@@ -7,6 +8,8 @@ export default function Navbar() {
   const location = useLocation();
   const token = localStorage.getItem("token");
   const settingsRef = useRef(null);
+  const settingsMenuRef = useRef(null);
+  const deleteModalRef = useRef(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [account, setAccount] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -43,6 +46,26 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickAway);
   }, []);
 
+  useEffect(() => {
+    if (!settingsOpen || !settingsMenuRef.current) return;
+
+    gsap.fromTo(
+      settingsMenuRef.current,
+      { autoAlpha: 0, y: -12, scale: 0.96 },
+      { autoAlpha: 1, y: 0, scale: 1, duration: 0.28, ease: "back.out(1.7)" }
+    );
+  }, [settingsOpen]);
+
+  useEffect(() => {
+    if (!confirmDelete || !deleteModalRef.current) return;
+
+    gsap.fromTo(
+      deleteModalRef.current,
+      { autoAlpha: 0, y: 24, scale: 0.92 },
+      { autoAlpha: 1, y: 0, scale: 1, duration: 0.34, ease: "back.out(1.65)" }
+    );
+  }, [confirmDelete]);
+
   const logout = () => {
     localStorage.removeItem("token");
     setAccount(null);
@@ -74,6 +97,10 @@ export default function Navbar() {
     { label: "Cart", path: "/cart" },
     { label: "Dashboard", path: "/dashboard" },
   ];
+  const visibleLinks =
+    account?.role === "admin"
+      ? [...links, { label: "Admin", path: "/admin" }]
+      : links;
 
   const navBtn = (path) =>
     `shrink-0 rounded-lg px-3 py-2 text-sm font-semibold whitespace-nowrap ${
@@ -85,7 +112,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
       <div className="page-wrap grid min-h-[72px] gap-3 py-3 md:grid-cols-[1fr_auto_1fr] md:items-center">
-        <div className="flex w-full items-center gap-2 md:w-[420px]">
+        <div className="order-2 flex w-full items-center gap-2 md:order-none md:w-[420px]">
           {token && (
             <div ref={settingsRef} className="relative shrink-0">
               <button
@@ -102,7 +129,7 @@ export default function Navbar() {
               </button>
 
               {settingsOpen && (
-                <div className="absolute left-0 top-14 z-[60] w-[320px] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl">
+                <div ref={settingsMenuRef} className="absolute left-0 top-14 z-[60] w-[min(320px,calc(100vw-2rem))] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl">
                   <div className="bg-slate-950 p-5 text-white">
                     <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-200">
                       Settings
@@ -145,7 +172,7 @@ export default function Navbar() {
                     <button
                       type="button"
                       onClick={logout}
-                      className="rounded-lg px-4 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-100"
+                      className="rounded-lg px-4 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-100 active:scale-[0.99]"
                     >
                       Logout
                     </button>
@@ -155,7 +182,7 @@ export default function Navbar() {
                         setSettingsMessage("");
                         setConfirmDelete(true);
                       }}
-                      className="rounded-lg px-4 py-3 text-left text-sm font-semibold text-rose-700 hover:bg-rose-50"
+                      className="rounded-lg px-4 py-3 text-left text-sm font-semibold text-rose-700 hover:bg-rose-50 active:scale-[0.99]"
                     >
                       Delete Account
                     </button>
@@ -177,7 +204,7 @@ export default function Navbar() {
 
         <button
           onClick={() => navigate("/")}
-          className="flex items-center justify-center gap-3 text-left"
+          className="order-1 flex items-center justify-center gap-3 text-left md:order-none"
           aria-label="Go to home"
         >
           <span className="grid h-11 w-11 place-items-center rounded-xl bg-slate-950 text-lg font-black text-white">
@@ -193,9 +220,9 @@ export default function Navbar() {
           </span>
         </button>
 
-        <div className="flex justify-start md:justify-end">
+        <div className="order-3 flex justify-start md:order-none md:justify-end">
           <nav className="flex max-w-full gap-1 overflow-x-auto rounded-xl bg-slate-50 p-1 scrollbar-hide">
-            {links.map((link) => (
+            {visibleLinks.map((link) => (
               <button
                 key={link.path}
                 onClick={() => navigate(link.path)}
@@ -227,7 +254,7 @@ export default function Navbar() {
 
       {confirmDelete && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur-sm">
-          <div className="surface max-w-md overflow-hidden rounded-xl text-center shadow-2xl">
+          <div ref={deleteModalRef} className="surface max-w-md overflow-hidden rounded-xl text-center shadow-2xl">
             <div className="bg-rose-600 p-6 text-white">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-rose-100">
                 Delete Account

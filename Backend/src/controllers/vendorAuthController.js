@@ -8,6 +8,12 @@ const makeToken = (vendorId) => {
   return jwt.sign({ id: vendorId }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
+const getRoleForEmail = (email) => {
+  return email?.toLowerCase() === process.env.ADMIN_EMAIL?.toLowerCase()
+    ? "admin"
+    : "vendor";
+};
+
 // POST /api/vendors/register
 exports.registerVendor = async (req, res) => {
   try {
@@ -29,6 +35,7 @@ exports.registerVendor = async (req, res) => {
       password: hashed,
       stallName: stallName || "",
       phone: phone || "",
+      role: getRoleForEmail(email),
     });
 
     return res.status(201).json({
@@ -36,6 +43,7 @@ exports.registerVendor = async (req, res) => {
       name: vendor.name,
       email: vendor.email,
       stallName: vendor.stallName,
+      role: vendor.role,
       token: makeToken(vendor._id),
     });
   } catch (error) {
@@ -64,6 +72,7 @@ exports.loginVendor = async (req, res) => {
       name: vendor.name,
       email: vendor.email,
       stallName: vendor.stallName,
+      role: vendor.role,
       token: makeToken(vendor._id),
     });
   } catch (error) {
@@ -80,6 +89,7 @@ exports.getAccount = async (req, res) => {
     email: req.vendor.email,
     stallName: req.vendor.stallName,
     phone: req.vendor.phone,
+    role: req.vendor.role,
   });
 };
 

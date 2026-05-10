@@ -9,11 +9,23 @@ html {
   scroll-padding-top: 88px;
 }
 
+html,
+body,
+#root {
+  min-width: 0;
+  width: 100%;
+}
+
+html.smooth-scroll-active {
+  scroll-behavior: auto;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   background-color: #f7f8fb;
   color: #0f172a;
   overscroll-behavior-y: none;
+  overflow-x: hidden;
 }
 
 button,
@@ -97,6 +109,22 @@ select {
 .animate-floatSlow2 {
   animation: floatSlow2 7s ease-in-out infinite;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

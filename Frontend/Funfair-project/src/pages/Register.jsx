@@ -81,7 +81,7 @@ export default function Register() {
 
   return (
     <div ref={pageRef} className="grid min-h-screen bg-slate-950 lg:grid-cols-[0.95fr_1.05fr]">
-      <section data-gsap="fade-up" className="hidden p-8 lg:flex lg:flex-col lg:justify-between">
+      <section data-gsap="slide-left" className="hidden p-8 lg:flex lg:flex-col lg:justify-between">
         <button
           onClick={() => navigate("/")}
           className="flex items-center gap-3 text-left"
@@ -118,9 +118,9 @@ export default function Register() {
         </div>
       </section>
 
-      <section data-gsap="fade-up" className="flex animate-pageEnter items-center justify-center bg-[#f7f8fb] px-4 py-10">
+      <section data-gsap="slide-right" className="flex animate-pageEnter items-center justify-center bg-[#f7f8fb] px-4 py-10">
         <div className="w-full max-w-xl">
-          <div className="surface rounded-xl p-6 md:p-8">
+          <div data-gsap="pop" className="surface rounded-xl p-6 md:p-8">
             <p className="eyebrow">Register</p>
             <h2 className="mt-2 text-3xl font-extrabold text-slate-950">
               Create Account
@@ -129,7 +129,7 @@ export default function Register() {
               Enter your vendor details to get started.
             </p>
 
-            <form onSubmit={handleRegister} className="mt-6 space-y-4">
+            <form onSubmit={handleRegister} data-gsap-stagger className="mt-6 space-y-4">
               <input
                 className="field"
                 name="name"
@@ -193,7 +193,7 @@ export default function Register() {
 
       {showSuccess && (
         <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-slate-950/70 px-4">
-          <div data-gsap="fade-up" className="surface max-w-lg rounded-xl p-8 text-center shadow-2xl animate-[fadeIn_0.4s_ease]">
+          <div data-gsap="pop" className="surface max-w-lg rounded-xl p-8 text-center shadow-2xl animate-[fadeIn_0.4s_ease]">
             <p className="eyebrow">Success</p>
             <h2 className="mt-3 text-3xl font-extrabold text-slate-950">
               Congratulations!

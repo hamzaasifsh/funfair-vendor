@@ -18,6 +18,20 @@ const orderSchema = new mongoose.Schema(
       },
     ],
     totalAmount: Number,
+    customerEmail: { type: String, default: "" },
+    paymentStatus: {
+      type: String,
+      enum: ["pending", "paid", "failed"],
+      default: "pending",
+    },
+    paymentProvider: {
+      type: String,
+      enum: ["manual", "stripe"],
+      default: "manual",
+    },
+    stripeSessionId: { type: String, default: "" },
+    stripePaymentIntentId: { type: String, default: "" },
+    paidAt: { type: Date },
     status: {
       type: String,
       enum: ["Pending", "Confirmed", "Shipped", "Delivered"],

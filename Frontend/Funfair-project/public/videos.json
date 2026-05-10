@@ -1,0 +1,49 @@
+{
+  "videos": [
+    {
+      "id": "home-hero",
+      "title": "Home Hero Landing Video",
+      "fileName": "landing-products.mp4",
+      "src": "/landing-products.mp4",
+      "page": "Home",
+      "section": "Main landing hero",
+      "description": "Primary background video shown at the top of the home page."
+    },
+    {
+      "id": "step-create-idea",
+      "title": "Create The Idea",
+      "fileName": "step-create-idea.mp4",
+      "src": "/step-create-idea.mp4",
+      "page": "Home",
+      "section": "From idea to income",
+      "description": "Video used for the first step card."
+    },
+    {
+      "id": "step-sell-online",
+      "title": "Sell Online",
+      "fileName": "step-build-catalog.mp4",
+      "src": "/step-build-catalog.mp4",
+      "page": "Home",
+      "section": "From idea to income",
+      "description": "Video used for the third carousel card."
+    },
+    {
+      "id": "product-photography",
+      "title": "Product Photography",
+      "fileName": "product-photography.mp4",
+      "src": "/product-photography.mp4",
+      "page": "Home",
+      "section": "Marketing that looks premium",
+      "description": "Video preview for the product photography section."
+    },
+    {
+      "id": "shop-hero",
+      "title": "Shop Hero",
+      "fileName": "shop-hero.mp4",
+      "src": "/shop-hero.mp4",
+      "page": "Shop",
+      "section": "Customer storefront hero",
+      "description": "Main background video shown at the top of the shop page."
+    }
+  ]
+}

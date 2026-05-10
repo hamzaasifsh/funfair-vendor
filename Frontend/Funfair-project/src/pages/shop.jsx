@@ -60,7 +60,7 @@ const Shop = () => {
 
       <main ref={pageRef} className="page-wrap animate-pageEnter py-8">
         <section
-          data-gsap="fade-up"
+          data-gsap="hero-pop"
           className="relative mb-8 min-h-[520px] overflow-hidden rounded-xl bg-slate-950 shadow-2xl"
         >
           <video
@@ -78,30 +78,30 @@ const Shop = () => {
 
           <div className="relative z-10 flex min-h-[520px] flex-col justify-end gap-8 p-5 md:p-8 lg:flex-row lg:items-end lg:justify-between lg:p-10">
             <div className="max-w-2xl">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-200">
+              <p data-gsap-hero-child className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-200">
                 Customer Storefront
               </p>
-              <h1 className="mt-3 text-4xl font-extrabold leading-tight text-white md:text-6xl">
+              <h1 data-gsap-hero-child className="mt-3 text-4xl font-extrabold leading-tight text-white md:text-6xl">
                 Shop products
               </h1>
-              <p className="mt-4 max-w-xl text-base leading-8 text-slate-200 md:text-lg">
+              <p data-gsap-hero-child className="mt-4 max-w-xl text-base leading-8 text-slate-200 md:text-lg">
                 Browse fresh picks from Dukan vendors and add your favorites to
                 cart.
               </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
+              <div data-gsap-hero-child className="mt-6 flex flex-wrap gap-3">
+                <span data-gsap="float" className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
                   New arrivals
                 </span>
-                <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
+                <span data-gsap="float" className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
                   Vendor picks
                 </span>
-                <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
+                <span data-gsap="float" className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
                   Muted preview
                 </span>
               </div>
             </div>
 
-            <div className="max-w-full rounded-xl border border-white/15 bg-white/10 p-2 shadow-xl backdrop-blur-md lg:max-w-[520px]">
+            <div data-gsap-hero-child className="max-w-full rounded-xl border border-white/15 bg-white/10 p-2 shadow-xl backdrop-blur-md lg:max-w-[520px]">
               <div className="flex gap-2 overflow-x-auto scrollbar-hide">
                 {categories.map((category) => (
                   <button
@@ -135,6 +135,7 @@ const Shop = () => {
             {filteredProducts.map((product) => (
               <article
                 key={product._id}
+                data-gsap-hover="lift"
                 className="surface group overflow-hidden rounded-xl"
               >
                 {product.images?.[0] ? (

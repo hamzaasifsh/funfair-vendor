@@ -84,7 +84,7 @@ const AddProduct = () => {
 
   return (
     <div ref={pageRef} className="animate-pageEnter">
-      <div data-gsap="fade-up" className="mb-6">
+      <div data-gsap="slide-left" className="mb-6">
         <p className="eyebrow">Catalog</p>
         <h1 className="mt-2 text-3xl font-extrabold text-slate-950">
           Add Product
@@ -96,7 +96,7 @@ const AddProduct = () => {
       </div>
 
       <div data-gsap-stagger className="grid gap-6 lg:grid-cols-[1fr_360px]">
-        <form onSubmit={handleSubmit} className="panel space-y-4">
+        <form onSubmit={handleSubmit} data-gsap="slide-left" className="panel space-y-4">
           <input
             type="text"
             name="name"
@@ -174,7 +174,7 @@ const AddProduct = () => {
           </button>
         </form>
 
-        <aside className="surface h-fit overflow-hidden rounded-xl">
+        <aside data-gsap="pop" data-gsap-hover="lift" className="surface h-fit overflow-hidden rounded-xl">
           {previewUrl.length > 0 ? (
             <div className="grid gap-2 p-2">
               <img

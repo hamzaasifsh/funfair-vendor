@@ -47,6 +47,7 @@ export default function Foot() {
             </p>
             <p className="mt-2 font-semibold text-white">
               pune, Maharashtra, India
+              Kondhwa Kh, 411048
             </p>
           </div>
         </div>

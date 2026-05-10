@@ -30,7 +30,7 @@ export default function Login() {
 
   return (
     <div ref={pageRef} className="grid min-h-screen bg-slate-950 lg:grid-cols-[0.95fr_1.05fr]">
-      <section data-gsap="fade-up" className="hidden p-8 lg:flex lg:flex-col lg:justify-between">
+      <section data-gsap="slide-left" className="hidden p-8 lg:flex lg:flex-col lg:justify-between">
         <button
           onClick={() => navigate("/")}
           className="flex items-center gap-3 text-left"
@@ -62,7 +62,7 @@ export default function Login() {
         </div>
       </section>
 
-      <section data-gsap="fade-up" className="flex animate-pageEnter items-center justify-center bg-[#f7f8fb] px-4 py-10">
+      <section data-gsap="slide-right" className="flex animate-pageEnter items-center justify-center bg-[#f7f8fb] px-4 py-10">
         <div className="w-full max-w-md">
           <div className="mb-8 lg:hidden">
             <button
@@ -78,7 +78,7 @@ export default function Login() {
             </button>
           </div>
 
-          <div className="surface rounded-xl p-6 md:p-8">
+          <div data-gsap="pop" className="surface rounded-xl p-6 md:p-8">
             <p className="eyebrow">Sign In</p>
             <h2 className="mt-2 text-3xl font-extrabold text-slate-950">
               Vendor Login
@@ -87,7 +87,7 @@ export default function Login() {
               Enter your email and password to continue.
             </p>
 
-            <form onSubmit={handleLogin} className="mt-6 space-y-4">
+            <form onSubmit={handleLogin} data-gsap-stagger className="mt-6 space-y-4">
               <input
                 className="field"
                 placeholder="Email"

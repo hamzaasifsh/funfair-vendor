@@ -52,7 +52,7 @@ const MyProducts = () => {
 
   return (
     <div ref={pageRef} className="animate-pageEnter">
-      <div data-gsap="fade-up" className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div data-gsap="slide-left" className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="eyebrow">Catalog</p>
           <h1 className="mt-2 text-3xl font-extrabold text-slate-950">
@@ -79,7 +79,11 @@ const MyProducts = () => {
       ) : (
         <div data-gsap-stagger className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {products.map((product) => (
-            <article key={product._id} className="surface overflow-hidden rounded-xl">
+            <article
+              key={product._id}
+              data-gsap-hover="lift"
+              className="surface overflow-hidden rounded-xl"
+            >
               {product.images?.[0] ? (
                 <img
                   src={imageUrl(product.images[0])}

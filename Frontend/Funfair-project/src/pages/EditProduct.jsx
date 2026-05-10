@@ -100,7 +100,7 @@ const EditProduct = () => {
 
   return (
     <div ref={pageRef} className="animate-pageEnter">
-      <div data-gsap="fade-up" className="mb-6">
+      <div data-gsap="slide-left" className="mb-6">
         <p className="eyebrow">Catalog</p>
         <h1 className="mt-2 text-3xl font-extrabold text-slate-950">
           Edit Product
@@ -110,7 +110,7 @@ const EditProduct = () => {
         </p>
       </div>
 
-      <form onSubmit={handleUpdate} data-gsap="fade-up" className="panel max-w-3xl space-y-4">
+      <form onSubmit={handleUpdate} data-gsap="pop" className="panel max-w-3xl space-y-4">
         <input
           type="text"
           name="name"
