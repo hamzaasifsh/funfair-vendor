@@ -86,13 +86,13 @@ const Home = () => {
       <Navbar />
 
       <section className="relative overflow-hidden border-b border-slate-200 bg-white">
-        <div className="relative">
+        <div className="page-wrap relative py-6 md:py-10">
           <div
             data-gsap="hero-pop"
-            className="relative min-h-[560px] overflow-hidden bg-slate-950 shadow-2xl md:min-h-[720px]"
+            className="relative min-h-[560px] overflow-hidden rounded-xl bg-slate-950 shadow-2xl md:min-h-[720px]"
           >
             <video
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-contain md:object-cover"
               src="/landing-products.mp4"
               autoPlay
               muted
@@ -104,7 +104,7 @@ const Home = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/56 to-slate-950/20" />
             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/85 to-transparent" />
 
-            <div className="page-wrap relative z-10 flex min-h-[560px] items-end py-8 md:min-h-[720px] md:py-12">
+            <div className="relative z-10 flex min-h-[560px] items-end px-5 py-8 md:min-h-[720px] md:px-10 md:py-12 lg:px-14">
               <div className="max-w-3xl">
                 <p data-gsap-hero-child className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-200">
                   Create an idea and sell online
