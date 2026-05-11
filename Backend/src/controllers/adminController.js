@@ -1,4 +1,4 @@
-const Vendor = require("../models/Vendor");
+const Vendor = require("../models/vendor");
 const Product = require("../models/Product");
 const Order = require("../models/Order");
 
