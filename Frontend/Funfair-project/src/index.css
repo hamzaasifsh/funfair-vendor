@@ -16,6 +16,11 @@ body,
   width: 100%;
 }
 
+html,
+body {
+  overflow-y: auto;
+}
+
 html.smooth-scroll-active {
   scroll-behavior: auto;
 }
@@ -24,8 +29,9 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: #f7f8fb;
   color: #0f172a;
-  overscroll-behavior-y: none;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 button,
@@ -226,12 +232,40 @@ select {
 }
 
 .scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  -ms-overflow-style: auto;
+  scrollbar-color: #94a3b8 #e2e8f0;
+  scrollbar-width: thin;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;
+  display: block;
+  height: 8px;
+  width: 8px;
+}
+
+.scrollbar-hide::-webkit-scrollbar-track {
+  background: #e2e8f0;
+  border-radius: 999px;
+}
+
+.scrollbar-hide::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 999px;
+}
+
+.scrollbar-hide::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+@media (max-width: 767px) {
+  html.smooth-scroll-active {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    overflow-y: auto;
+    touch-action: pan-x pan-y;
+  }
 }
 
 @layer components {

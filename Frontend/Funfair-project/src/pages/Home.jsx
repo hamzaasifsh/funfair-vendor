@@ -7,6 +7,7 @@ import useGsapReveal from "../hooks/useGsapReveal";
 const Home = () => {
   const navigate = useNavigate();
   const pageRef = useRef(null);
+  const carouselTouchStartRef = useRef(null);
   const [activeIdeaStep, setActiveIdeaStep] = useState(0);
 
   useGsapReveal(pageRef, []);
@@ -81,6 +82,27 @@ const Home = () => {
     );
   };
 
+  const handleCarouselTouchStart = (event) => {
+    carouselTouchStartRef.current = event.touches[0].clientX;
+  };
+
+  const handleCarouselTouchEnd = (event) => {
+    if (carouselTouchStartRef.current === null) return;
+
+    const distance =
+      carouselTouchStartRef.current - event.changedTouches[0].clientX;
+
+    if (Math.abs(distance) > 48) {
+      if (distance > 0) {
+        showNextStep();
+      } else {
+        showPreviousStep();
+      }
+    }
+
+    carouselTouchStartRef.current = null;
+  };
+
   return (
     <div ref={pageRef} className="app-page overflow-x-hidden">
       <Navbar />
@@ -89,30 +111,32 @@ const Home = () => {
         <div className="page-wrap relative py-6 md:py-10">
           <div
             data-gsap="hero-pop"
-            className="relative min-h-[560px] overflow-hidden rounded-xl bg-slate-950 shadow-2xl md:min-h-[720px]"
+            className="relative overflow-hidden rounded-xl bg-slate-950 shadow-2xl md:min-h-[720px]"
           >
-            <video
-              className="absolute inset-0 h-full w-full object-contain md:object-cover"
-              src="/landing-products.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              aria-label="Luxury products floating in a cinematic ecommerce scene"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/56 to-slate-950/20" />
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/85 to-transparent" />
+            <div className="relative aspect-[16/11] overflow-hidden bg-slate-900 md:absolute md:inset-0 md:aspect-auto">
+              <video
+                className="absolute inset-0 h-full w-full object-cover"
+                src="/landing-products.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label="Luxury products floating in a cinematic ecommerce scene"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/65 via-slate-950/10 to-transparent md:bg-gradient-to-r md:from-slate-950/90 md:via-slate-950/56 md:to-slate-950/20" />
+              <div className="absolute inset-x-0 bottom-0 hidden h-1/2 bg-gradient-to-t from-slate-950/85 to-transparent md:block" />
+            </div>
 
-            <div className="relative z-10 flex min-h-[560px] items-end px-5 py-8 md:min-h-[720px] md:px-10 md:py-12 lg:px-14">
+            <div className="relative z-10 flex px-5 py-7 md:min-h-[720px] md:items-end md:px-10 md:py-12 lg:px-14">
               <div className="max-w-3xl">
                 <p data-gsap-hero-child className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-200">
                   Create an idea and sell online
                 </p>
-                <h1 data-gsap-hero-child className="mt-4 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-6xl">
+                <h1 data-gsap-hero-child className="mt-4 text-[2.55rem] font-extrabold leading-[1.05] text-white sm:text-5xl md:text-6xl">
                   Take your stall idea from local counter to online business.
                 </h1>
-                <p data-gsap-hero-child className="mt-5 max-w-2xl text-sm leading-7 text-slate-200 sm:text-base md:text-lg md:leading-8">
+                <p data-gsap-hero-child className="mt-5 max-w-2xl text-base leading-8 text-slate-200 md:text-lg md:leading-8">
                   Dukan helps vendors present products beautifully, manage
                   stock, receive orders, and build a digital shop customers can
                   visit from anywhere.
@@ -140,11 +164,11 @@ const Home = () => {
                 >
                   {landingStats.map(([value, label]) => (
                     <div
-                      key={label}
-                      className="rounded-xl border border-white/15 bg-white/10 p-4 text-white backdrop-blur"
+                  key={label}
+                      className="rounded-xl border border-white/15 bg-white/10 p-5 text-white backdrop-blur"
                     >
-                      <p className="text-2xl font-extrabold">{value}</p>
-                      <p className="mt-1 text-xs font-semibold text-slate-300">
+                      <p className="text-3xl font-extrabold md:text-2xl">{value}</p>
+                      <p className="mt-1 text-sm font-semibold text-slate-300 md:text-xs">
                         {label}
                       </p>
                     </div>
@@ -252,7 +276,12 @@ const Home = () => {
           </div>
         </div>
 
-        <div data-gsap="pop" className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl shadow-slate-200/80">
+        <div
+          data-gsap="pop"
+          onTouchStart={handleCarouselTouchStart}
+          onTouchEnd={handleCarouselTouchEnd}
+          className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl shadow-slate-200/80"
+        >
           <div
             className="flex transition-transform duration-700 ease-out"
             style={{ transform: `translateX(-${activeIdeaStep * 100}%)` }}
@@ -263,10 +292,10 @@ const Home = () => {
                 className="min-w-full"
               >
                 <div className="grid min-h-[520px] lg:grid-cols-[1.15fr_0.85fr]">
-                  <div className="relative min-h-[360px] overflow-hidden bg-slate-950 lg:min-h-[520px]">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-slate-950 sm:aspect-[16/10] lg:aspect-auto lg:min-h-[520px]">
                     {step.mediaType === "video" ? (
                       <video
-                        className="absolute inset-0 h-full w-full object-cover"
+                        className="absolute inset-0 h-full w-full object-contain lg:object-cover"
                         src={step.media}
                         autoPlay
                         muted
@@ -277,15 +306,12 @@ const Home = () => {
                       />
                     ) : (
                       <img
-                        className="absolute inset-0 h-full w-full object-cover"
+                        className="absolute inset-0 h-full w-full object-contain lg:object-cover"
                         src={step.media}
                         alt={`${step.title} preview`}
                       />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent" />
-                    <div className="absolute left-5 top-5 rounded-lg border border-white/20 bg-white/15 px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white backdrop-blur">
-                      Step 0{index + 1}
-                    </div>
                   </div>
 
                   <div className="flex flex-col justify-center p-6 md:p-10 lg:p-12">
