@@ -9,22 +9,36 @@ const connectDB = require("./src/config/db");
 // ✅ create app FIRST
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://127.0.0.1:5173",
-  process.env.FRONTEND_URL,
-].filter(Boolean);
+const parseOrigins = (...values) =>
+  values
+    .filter(Boolean)
+    .flatMap((value) => value.split(","))
+    .map((value) => value.trim().replace(/\/$/, ""))
+    .filter(Boolean);
+
+const allowedOrigins = new Set(
+  parseOrigins(
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    process.env.FRONTEND_URL,
+    process.env.CLIENT_URL,
+    process.env.CORS_ORIGINS
+  )
+);
 
 // ✅ middleware
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      const normalizedOrigin = origin?.replace(/\/$/, "");
+
+      if (!normalizedOrigin || allowedOrigins.has(normalizedOrigin)) {
         callback(null, true);
         return;
       }
 
-      callback(new Error("Not allowed by CORS"));
+      console.warn(`Blocked CORS request from origin: ${origin}`);
+      callback(null, false);
     },
     credentials: true,
   })
