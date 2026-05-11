@@ -44,7 +44,7 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div data-gsap="float" className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
+      <div data-gsap="float" className="mt-8 rounded-xl border border-amber-200 bg-amber-50 p-4 md:mt-12">
         <p className="text-sm font-semibold text-amber-950">Stock health</p>
         <p className="mt-1 text-sm text-amber-800">
           Keep quantities current so customers only order what you can deliver.

@@ -14,6 +14,9 @@ export default function Navbar() {
   const [account, setAccount] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [settingsMessage, setSettingsMessage] = useState("");
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "light"
+  );
 
   useEffect(() => {
     const loadAccount = async () => {
@@ -34,6 +37,11 @@ export default function Navbar() {
 
     loadAccount();
   }, [token]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     const handleClickAway = (event) => {
@@ -89,6 +97,10 @@ export default function Navbar() {
         error.response?.data?.message || "Could not delete account right now."
       );
     }
+  };
+
+  const toggleTheme = () => {
+    setTheme((current) => (current === "dark" ? "light" : "dark"));
   };
 
   const links = [
@@ -168,6 +180,17 @@ export default function Navbar() {
                         </p>
                       </div>
                     </div>
+
+                    <button
+                      type="button"
+                      onClick={toggleTheme}
+                      className="flex items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-100 active:scale-[0.99]"
+                    >
+                      <span>Theme</span>
+                      <span className="rounded-full bg-slate-950 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-white">
+                        {theme === "dark" ? "Dark" : "Light"}
+                      </span>
+                    </button>
 
                     <button
                       type="button"

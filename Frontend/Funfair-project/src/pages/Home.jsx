@@ -23,8 +23,8 @@ const Home = () => {
     {
       title: "Build your catalog",
       desc: "Add photos, prices, stock, and categories so customers understand what you sell.",
-      media: "/step-build-catalog-card.png",
-      mediaType: "image",
+      media: "/step-build-catalog-card.mp4",
+      mediaType: "video",
       label: "Organize",
     },
     {
@@ -286,7 +286,7 @@ const Home = () => {
             className="flex transition-transform duration-700 ease-out"
             style={{ transform: `translateX(-${activeIdeaStep * 100}%)` }}
           >
-            {ideaSteps.map((step, index) => (
+            {ideaSteps.map((step) => (
               <div
                 key={step.title}
                 className="min-w-full"

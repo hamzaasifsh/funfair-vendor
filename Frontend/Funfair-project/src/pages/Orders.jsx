@@ -98,15 +98,6 @@ const Orders = () => {
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <span
                     className={`status-pill ${
-                      order.paymentStatus === "paid"
-                        ? "bg-emerald-100 text-emerald-800"
-                        : "bg-amber-100 text-amber-800"
-                    }`}
-                  >
-                    {order.paymentStatus || "pending"}
-                  </span>
-                  <span
-                    className={`status-pill ${
                       statusStyles[order.status] || statusStyles.Pending
                     }`}
                   >

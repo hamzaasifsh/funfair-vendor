@@ -11,8 +11,6 @@ const Cart = () => {
     return storedCart;
   });
   const [cartNotice, setCartNotice] = useState(null);
-  const [customerEmail, setCustomerEmail] = useState("");
-  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   const updateCart = (updatedItems) => {
     setCartItems(updatedItems);
@@ -59,9 +57,7 @@ const Cart = () => {
     }
 
     try {
-      setCheckoutLoading(true);
-
-      const res = await fetch(`${API_URL}/orders/create-checkout-session`, {
+      const res = await fetch(`${API_URL}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,30 +65,38 @@ const Cart = () => {
         body: JSON.stringify({
           items: cartItems.map((item) => ({
             productId: item._id,
+            vendorId: item.vendorId,
+            name: item.name,
+            price: item.price,
             quantity: item.quantity,
           })),
-          customerEmail,
+          totalAmount,
         }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Could not start Stripe checkout");
+        throw new Error(data.message || "Could not place order");
       }
 
-      window.location.href = data.url;
+      setCartNotice({
+        title: "Your cart is ready",
+        message: "Order placed successfully. Your selected products are on the way to the vendor.",
+        type: "success",
+      });
+
+      localStorage.removeItem("cart");
+      setCartItems([]);
     } catch (error) {
       console.error("Checkout error:", error);
       setCartNotice({
-        title: "Checkout could not start",
+        title: "Checkout could not finish",
         message:
           error.message ||
-          "Please check Stripe setup and try checkout again.",
+          "Please try placing your order again.",
         type: "empty",
       });
-    } finally {
-      setCheckoutLoading(false);
     }
   };
 
@@ -262,16 +266,6 @@ const Cart = () => {
                 </div>
               </div>
               <div className="mt-5 border-t border-slate-200 pt-5">
-                <label className="block text-sm font-semibold text-slate-600">
-                  Email for receipt
-                </label>
-                <input
-                  type="email"
-                  value={customerEmail}
-                  onChange={(event) => setCustomerEmail(event.target.value)}
-                  className="field mt-2"
-                  placeholder="customer@example.com"
-                />
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-slate-950">Total</span>
                   <span className="text-2xl font-extrabold text-slate-950">
@@ -280,10 +274,9 @@ const Cart = () => {
                 </div>
                 <button
                   onClick={handleCheckout}
-                  disabled={checkoutLoading}
                   className="btn-primary mt-5 w-full"
                 >
-                  {checkoutLoading ? "Opening Stripe..." : "Pay with Stripe"}
+                  Place Order
                 </button>
               </div>
             </aside>

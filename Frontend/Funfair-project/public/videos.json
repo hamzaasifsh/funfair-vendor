@@ -19,6 +19,15 @@
       "description": "Video used for the first step card."
     },
     {
+      "id": "step-build-catalog",
+      "title": "Build Your Catalog",
+      "fileName": "step-build-catalog-card.mp4",
+      "src": "/step-build-catalog-card.mp4",
+      "page": "Home",
+      "section": "From idea to income",
+      "description": "Video used for the second step carousel card."
+    },
+    {
       "id": "step-sell-online",
       "title": "Sell Online",
       "fileName": "step-build-catalog.mp4",
@@ -26,6 +35,15 @@
       "page": "Home",
       "section": "From idea to income",
       "description": "Video used for the third carousel card."
+    },
+    {
+      "id": "dashboard-popup",
+      "title": "Dashboard Popup",
+      "fileName": "dashboard-popup.mp4",
+      "src": "/dashboard-popup.mp4",
+      "page": "Dashboard",
+      "section": "Vendor dashboard welcome panel",
+      "description": "Video used in the popup-style dashboard welcome card."
     },
     {
       "id": "product-photography",

@@ -70,6 +70,58 @@ const Dashboard = () => {
         </p>
       </div>
 
+      <section
+        data-gsap="pop"
+        className="mb-6 overflow-hidden rounded-xl border border-slate-200 bg-slate-950 shadow-2xl shadow-slate-300/70"
+      >
+        <div className="grid lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="relative min-h-[260px] overflow-hidden sm:min-h-[340px] lg:min-h-[430px]">
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              src="/dashboard-popup.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label="Dashboard welcome preview video"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-transparent lg:bg-gradient-to-r lg:from-slate-950/20 lg:via-slate-950/10 lg:to-slate-950/80" />
+            <div className="absolute bottom-4 left-4 right-4 rounded-xl border border-white/15 bg-white/10 p-4 text-white shadow-xl backdrop-blur md:left-6 md:right-auto md:max-w-sm">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-indigo-200">
+                Live workspace
+              </p>
+              <p className="mt-2 text-xl font-extrabold leading-tight">
+                Your store control room is ready.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col justify-center p-6 text-white md:p-8 lg:p-10">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-200">
+              Welcome back
+            </p>
+            <h2 className="mt-3 text-3xl font-extrabold leading-tight md:text-5xl">
+              Manage products, stock, and orders from one clean dashboard.
+            </h2>
+            <p className="mt-5 text-base leading-8 text-slate-300">
+              Keep your catalog fresh, watch inventory health, and prepare your
+              store for the next customer without jumping between tools.
+            </p>
+            <div className="mt-7 grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+              {["Catalog", "Stock", "Orders"].map((item) => (
+                <div
+                  key={item}
+                  className="rounded-xl border border-white/15 bg-white/10 p-4 text-sm font-bold text-white backdrop-blur"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div data-gsap-stagger className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {metrics.map(([label, value, helper]) => (
           <div key={label} data-gsap-hover="lift" className="metric-card">

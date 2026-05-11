@@ -14,7 +14,6 @@ import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import Orders from "./pages/Orders";
 import SmoothScroll from "./components/SmoothScroll";
 import AdminPanel from "./pages/AdminPanel";
-import CheckoutSuccess from "./pages/CheckoutSuccess";
 
 function App() {
   return (
@@ -27,7 +26,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/orders" element={<Orders />} />
-        <Route path="/checkout-success" element={<CheckoutSuccess />} />
         <Route
           path="/admin"
           element={
